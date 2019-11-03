@@ -43,14 +43,6 @@
                :id (Integer/parseInt id)
                :csum csum}))))
 
-(def input
-  (->> (str/split (slurp "./input") #"\n")
-       (map #(re-find #"(\S+\-)(\d+)\[(\S+)\]" %))
-       (map (fn [[_ name id csum]]
-              {:name (remove-dashes name)
-               :id (Integer/parseInt id)
-               :csum csum}))))
-
 (def part2-input
   (->> (str/split (slurp "./input") #"\n")
        (map #(re-find #"(\S+\-)(\d+)\[(\S+)\]" %))
