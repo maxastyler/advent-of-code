@@ -15,9 +15,6 @@
        flatten
        (partition 3)))
 
-(def valid-triangles (filter valid-triangle input))
-(def valid-trans-triangles (filter valid-triangle trans-input))
-
 (defn transpose [a]
   (apply mapv vector a))
 
@@ -26,3 +23,6 @@
    (> (+ a b) c)
    (> (+ b c) a)
    (> (+ c a) b)))
+
+(def valid-triangles (filter valid-triangle input))
+(def valid-trans-triangles (filter valid-triangle trans-input))
