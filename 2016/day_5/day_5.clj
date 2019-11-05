@@ -18,8 +18,11 @@
   (filter #(= '(\0 \0 \0 \0 \0) (take 5 %)) hashes))
 
 (def valid-hashes-p2
-  (filter #(and (>= (int (nth % 5)) 48) (< (int (nth % 5)) 56))
-          valid-hashes-p1))
+  (keep
+   (fn [h] (let [pos (- (int (nth h 5)) 48)
+                 val (nth h 6)]
+             (if (and (>= pos 0) (< pos 8)) [pos val] nil)))
+   valid-hashes-p1))
 
 (def password-p1
   (->> (take 8 valid-hashes-p1)
@@ -28,8 +31,8 @@
 
 (def password-p2 (reduce
                   (fn [acc v]
-                    (let [key (int (nth v 5))
-                          val (int (nth v 6))
+                    (let [key (first v)
+                          val (last v)
                           new-pass (replace-maybe acc key val)]
                       (if (not-filled? new-pass)
                         new-pass
