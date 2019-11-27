@@ -51,6 +51,18 @@
                           (map (fn [[k v]] [k (reduce #(+ %1 (:value %2))
                                                       0 v)]))))
 
+(defn total-distance [[x y _]]
+  (apply +
+         (map (fn [[p1x p1y k]]
+                (manhattan-distance [x y] [p1x p1y]))
+              dangerous-coords)))
+
 (def part-1 (->> symbol-areas
                  (filter (fn [[_ a]] (< a ##Inf)))
-                 (apply max-key second)))
+                 (apply max-key second)
+                 (second)))
+
+(def part-2 (->> coords
+                 (map total-distance)
+                 (filter #(< % 10000))
+                 (count)))
