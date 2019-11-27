@@ -14,7 +14,6 @@
                                             :h (Integer/parseInt h)}))))
 
 (defn index-2d-to-1d [[m n]] (+ (* size m) n))
-(defn index-1d-to-2d [i] [(int (/ i size)) (mod i size)])
 
 (def grid (vec (repeat (* size size) #{})))
 
