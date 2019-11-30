@@ -26,7 +26,7 @@
                  (take 10)
                  (apply str)))
 
-(def lots-of-recipes (recipes 30000000))
+(def part-2 (find-first vec-input (recipes 30000001)))
 
 (defn find-first [s xs] (let [ls (count s)]
                           (reduce (fn [_ i]
