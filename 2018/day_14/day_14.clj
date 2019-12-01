@@ -8,31 +8,31 @@
                         (map str)
                         (mapv #(Integer/parseInt ^String %))))
 
-(defn recipes [n]
-  "Return at least n recipes"
-  (loop [e1 0, e2 1, recipes [3 7]]
-    (let [new-recipes (apply conj recipes (digitise (+ (recipes e1)
-                                                       (recipes e2))))
-          new-e1 (mod (+ e1 (recipes e1) 1) (count new-recipes))
-          new-e2 (mod (+ e2 (recipes e2) 1) (count new-recipes))]
-      (if (> (count new-recipes) n)
-        new-recipes
-        (recur new-e1 new-e2 new-recipes)))))
+(defn lazy-recipes [elf-1 elf-2 recp-init]
+  (lazy-cat recp-init
+            ((fn rcp [e1 e2 rec]
+               (let [new-recipes (digitise (+ (rec e1) (rec e2)))
+                     y (+ (count new-recipes) (count rec))
+                     new-e1 (mod (+ e1 (rec e1) 1) y)
+                     new-e2 (mod (+ e2 (rec e2) 1) y)]
+                 (lazy-cat new-recipes
+                           (rcp new-e1 new-e2 (apply conj rec new-recipes)))))
+             elf-1 elf-2 recp-init)))
 
-(def part-1 (->> num-input
-                 (+ 10)
-                 (recipes)
-                 (drop num-input)
-                 (take 10)
-                 (apply str)))
+(defn scan-seq
+  "Scan over the sequence s with a slice length of n"
+  [n s]
+  (let [init (apply conj (clojure.lang.PersistentQueue/EMPTY) (take n s))]
+    ((fn sc [q s]
+       (let [new-q (pop (conj q (first s)))]
+         (lazy-cat [q] (sc new-q (rest s)))))
+     init (drop n s))))
 
-(def part-2 (find-first vec-input (recipes 30000001)))
+(def part-1 (apply str (transduce (comp (drop num-input)
+                                        (take 10))
+                                  conj
+                                  (lazy-recipes 0 1 [3 7]))))
 
-(defn find-first [s xs] (let [ls (count s)]
-                          (reduce (fn [_ i]
-                                    (if (= (subvec xs i (+ i ls))
-                                           s)
-                                      (reduced i)
-                                      i))
-                                  0
-                                  (range (- (count xs) ls)))))
+(def part-2 (reduce (fn [i q] (if (= q vec-input)
+                                (reduced i)
+                                (+ i 1))) 0 (scan-seq 6 (lazy-recipes 0 1 [3 7]))))
