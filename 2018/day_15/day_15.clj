@@ -8,6 +8,9 @@ Each elf is a map consisting of health, x and y as keys.
 "
 )
 
+(defn neighbours "Get the neighbours of a point"
+  [[x y]] [[(dec x) y] [(inc x) y] [x (dec y)] [x (inc y)]])
+
 (defn find-closest
   "Find the closest targets from the set of targets in the given grid
   Inaccessible positions in the grid are noted by nil
@@ -30,7 +33,7 @@ Each elf is a map consisting of health, x and y as keys.
           (recur new_queue seen closest)
           (recur (apply conj new_queue (map #(conj % (inc cur-dist))
                                             (neighbours point_x_y)))
-                 (conj seen point_x_y)))))))
-
-(defn neighbours "Get the neighbours of a point"
-  [[x y]] [[(dec x) y] [(inc x) y] [x (dec y)] [x (inc y)]])
+                 (conj seen point_x_y)
+                 (if (targets point_x_y)
+                   (conj closest point)
+                   closest)))))))
