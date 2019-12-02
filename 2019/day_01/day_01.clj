@@ -3,10 +3,10 @@
                 (map #(Integer/parseInt %))))
 
 (defn fuel-req [x] (- (quot x 3) 2))
-(defn rec-fuel-req [x] (let [fr (- (quot x 3) 2)]
-                         (if (>= 0 fr)
-                           0
-                           (+ (rec-fuel-req fr) fr))))
 
 (def part-1 (transduce (map fuel-req) + input))
-(def part-2 (transduce (map rec-fuel-req) + input))
+(def part-2-func (transduce (map #(reduce + 0
+                                          (rest
+                                           (take-while pos?
+                                                       (iterate fuel-req %)))))
+                            + input))
