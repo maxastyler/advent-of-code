@@ -1,6 +1,6 @@
 (def input (->> (slurp "input")
                 (clojure.string/split-lines)
-                (map #(Integer/parseInt %))))
+                (map read-string)))
 
 (defn fuel-req [x] (- (quot x 3) 2))
 
