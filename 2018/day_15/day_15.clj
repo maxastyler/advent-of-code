@@ -3,7 +3,7 @@
 either nil or something.
 nil represents an inaccessible point, and something else is accessible
 
-The state is {:grid [] :units [{:health 200 :x 0 :y 0 :attack 3 :type :goblin/:elf}]}
+The state is {:grid [] :units {id {:health 200 :x 0 :y 0 :attack 3 :type :goblin/:elf}}}
 Each elf is a map consisting of health, x and y as keys.
 "
 )
@@ -37,3 +37,8 @@ Each elf is a map consisting of health, x and y as keys.
                  (if (targets point_x_y)
                    (conj closest point)
                    closest)))))))
+
+(defn take-turn
+  [{:keys [grid units]}]
+  {:grid grid
+   :units (loop units-left)})
