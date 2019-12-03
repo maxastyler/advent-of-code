@@ -1,5 +1,4 @@
 (def input (as-> (slurp "./input") i
-;; (def input (as-> "1,0,0,0,99" i
              (clojure.string/trim-newline i)
              (clojure.string/split i #",")
              (map read-string i)
