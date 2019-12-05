@@ -46,4 +46,3 @@
                                 (Math/abs (w2 %))) intersections))
                  (filter pos?)
                  (apply min)))
-
