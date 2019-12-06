@@ -34,11 +34,11 @@
                  :pointer (+ 2 pointer)
                  :output (conj output (n 0)))
         5 (assoc state
-                 :pointer (if (not= 0 (n 0))
+                 :pointer (if-not (zero? (n 0))
                             (n 1)
                             (+ 3 pointer)))
         6 (assoc state
-                 :pointer (if (= 0 (n 0))
+                 :pointer (if (zero? (n 0))
                             (n 1)
                             (+ 3 pointer)))
         7 (assoc state
