@@ -66,7 +66,7 @@
   (t/is (= (peek ((run-until-paused 0 [3,9,8,9,10,9,4,9,99,-1,8] [8]) 1)) 1))
   (t/is (= (peek ((run-until-paused 0 [3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9] [8]) 1)) 1))
   (t/is (= (peek ((run-until-paused 0 [3,3,1105,-1,9,1101,0,0,12,4,12,99,1] [8]) 1)) 1))
-  (t/is (= (peek ((run-until-paused 0 [3,9,7,9,10,9,4,9,99,-1,8] [5]) 1)) 1)))
+  (t/is (= (peek ((run-until-paused 0 [3,9,7,9,10,9,4,9,99,-1,8] [5]) 1)) 1))
 
 (defn intcode*
   "takes in a dictionary of {:pointer pointer :tape tape
