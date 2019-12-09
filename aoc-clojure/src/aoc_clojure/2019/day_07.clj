@@ -13,10 +13,6 @@
               (repeat 4 {:pointer 0 :tape prog
                          :input (conj (clojure.lang.PersistentQueue/EMPTY) 8)}))
              [0 :input] #(conj % 0)))
-(defmethod print-method clojure.lang.PersistentQueue [q, w] ; Overload the printer for queues so they look like fish
-  (print-method '<- w)
-  (print-method (seq q) w)
-  (print-method '-< w))
 
 (defn one-round
   "run one round of computations"
