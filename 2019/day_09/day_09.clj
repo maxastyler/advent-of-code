@@ -1,7 +1,7 @@
 (def input (as-> (slurp "./input") i
-                (clojure.string/trim-newline i)
-                (clojure.string/split i #",")
-                (map read-string i)))
+             (clojure.string/trim-newline i)
+             (clojure.string/split i #",")
+             (map read-string i)))
 
 (defn intcode
   "takes in a dictionary which should contain at least :pointer and :tape"
@@ -59,18 +59,18 @@
 
 (defn run-until-paused [s]
   "run the intcode computer on s until waiting or finished"
-  (loop [ns (intcode s) i 0]
+  (loop [ns (intcode s)]
     (if (or (:waiting ns)
             (:finished ns))
       ns
-      (recur (intcode ns) (inc i)))))
+      (recur (intcode ns)))))
 
 (def part-1 (:output (run-until-paused {:input [1]
-                                :tape (zipmap (range) input)
-                                :pointer 0
-                                :base 0})))
+                                        :tape (zipmap (range) input)
+                                        :pointer 0
+                                        :base 0})))
 
 (def part-2 (:output (run-until-paused {:input [2]
-                                :tape (zipmap (range) input)
-                                :pointer 0
-                                :base 0})))
+                                        :tape (zipmap (range) input)
+                                        :pointer 0
+                                        :base 0})))
