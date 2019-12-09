@@ -7,9 +7,7 @@
 (def input (->> (slurp "./input")
                 (str/split-lines)
                 (map #(str/split % #","))
-                (map #(map parse-instruction %))
-                (map vec)
-                (vec)))
+                (mapv #(mapv parse-instruction %))))
 
 (defn gen-positions [[init-x init-y] {:keys [dir dist]}]
   (map (fn [[x y]] [(+ x init-x) (+ y init-y)])
