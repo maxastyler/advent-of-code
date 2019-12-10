@@ -20,9 +20,6 @@
       r)))
 
 (defn interleave-all
-  "Returns a lazy seq of the first item in each coll, then the second, etc.
-  Unlike `clojure.core/interleave`, the returned seq contains all items in the
-  supplied collections, even if the collections are different sizes."
   {:arglists '([& colls])}
   ([] ())
   ([c1] (lazy-seq c1))
