@@ -1,0 +1,1081 @@
+{:log
+ [{:path [],
+   :lib org.clojure/clojure,
+   :coord {:mvn/version "1.10.1"},
+   :use-coord {:mvn/version "1.10.1"},
+   :coord-id {:mvn/version "1.10.1"},
+   :include true,
+   :reason :new-top-dep}
+  {:path [],
+   :lib clj-time/clj-time,
+   :coord {:mvn/version "0.14.2"},
+   :use-coord {:mvn/version "0.14.2"},
+   :coord-id {:mvn/version "0.14.2"},
+   :include true,
+   :reason :new-top-dep}
+  {:path [],
+   :lib me.raynes/fs,
+   :coord {:mvn/version "1.4.6"},
+   :use-coord {:mvn/version "1.4.6"},
+   :coord-id {:mvn/version "1.4.6"},
+   :include true,
+   :reason :new-top-dep}
+  {:path [],
+   :lib compliment/compliment,
+   :coord {:mvn/version "0.3.6"},
+   :use-coord {:mvn/version "0.3.6"},
+   :coord-id {:mvn/version "0.3.6"},
+   :include true,
+   :reason :new-top-dep}
+  {:path [],
+   :lib com.cemerick/pomegranate,
+   :coord {:mvn/version "0.4.0"},
+   :use-coord {:mvn/version "0.4.0"},
+   :coord-id {:mvn/version "0.4.0"},
+   :include true,
+   :reason :new-top-dep}
+  {:path [],
+   :lib org.tcrawley/dynapath,
+   :coord {:mvn/version "0.2.5"},
+   :use-coord {:mvn/version "0.2.5"},
+   :coord-id {:mvn/version "0.2.5"},
+   :include true,
+   :reason :new-top-dep}
+  {:path [],
+   :lib nrepl/nrepl,
+   :coord {:mvn/version "0.6.0"},
+   :use-coord {:mvn/version "0.6.0"},
+   :coord-id {:mvn/version "0.6.0"},
+   :include true,
+   :reason :new-top-dep}
+  {:path [],
+   :lib cider/cider-nrepl,
+   :coord {:mvn/version "0.23.0-SNAPSHOT"},
+   :use-coord {:mvn/version "0.23.0-SNAPSHOT"},
+   :coord-id {:mvn/version "0.23.0-SNAPSHOT"},
+   :include true,
+   :reason :new-top-dep}
+  {:path [org.clojure/clojure],
+   :lib org.clojure/spec.alpha,
+   :coord {:mvn/version "0.2.176"},
+   :use-coord {:mvn/version "0.2.176"},
+   :coord-id {:mvn/version "0.2.176"},
+   :include true,
+   :reason :new-dep}
+  {:path [org.clojure/clojure],
+   :lib org.clojure/core.specs.alpha,
+   :coord {:mvn/version "0.2.44"},
+   :use-coord {:mvn/version "0.2.44"},
+   :coord-id {:mvn/version "0.2.44"},
+   :include true,
+   :reason :new-dep}
+  {:path [clj-time/clj-time],
+   :lib joda-time/joda-time,
+   :coord {:mvn/version "2.9.7"},
+   :use-coord {:mvn/version "2.9.7"},
+   :coord-id {:mvn/version "2.9.7"},
+   :include true,
+   :reason :new-dep}
+  {:path [me.raynes/fs],
+   :lib org.clojure/clojure,
+   :coord {:mvn/version "1.4.0"},
+   :use-coord {:mvn/version "1.4.0"},
+   :coord-id {:mvn/version "1.4.0"},
+   :include false,
+   :reason :use-top}
+  {:path [me.raynes/fs],
+   :lib org.apache.commons/commons-compress,
+   :coord {:mvn/version "1.8"},
+   :use-coord {:mvn/version "1.8"},
+   :coord-id {:mvn/version "1.8"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate],
+   :lib org.apache.maven/maven-resolver-provider,
+   :coord {:mvn/version "3.5.0"},
+   :use-coord {:mvn/version "3.5.0"},
+   :coord-id {:mvn/version "3.5.0"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate],
+   :lib org.apache.maven.resolver/maven-resolver-transport-file,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate],
+   :lib org.apache.maven.resolver/maven-resolver-transport-http,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate],
+   :lib org.apache.maven.resolver/maven-resolver-transport-wagon,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate],
+   :lib org.apache.maven.resolver/maven-resolver-connector-basic,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate],
+   :lib org.tcrawley/dynapath,
+   :coord {:mvn/version "0.2.5"},
+   :use-coord {:mvn/version "0.2.5"},
+   :coord-id {:mvn/version "0.2.5"},
+   :include false,
+   :reason :use-top}
+  {:path [com.cemerick/pomegranate],
+   :lib org.apache.maven.wagon/wagon-provider-api,
+   :coord {:mvn/version "2.12"},
+   :use-coord {:mvn/version "2.12"},
+   :coord-id {:mvn/version "2.12"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate],
+   :lib org.apache.maven.wagon/wagon-http,
+   :coord {:mvn/version "2.12"},
+   :use-coord {:mvn/version "2.12"},
+   :coord-id {:mvn/version "2.12"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate],
+   :lib org.apache.httpcomponents/httpclient,
+   :coord {:mvn/version "4.5.3"},
+   :use-coord {:mvn/version "4.5.3"},
+   :coord-id {:mvn/version "4.5.3"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate],
+   :lib org.clojure/clojure,
+   :coord {:mvn/version "1.3.0"},
+   :use-coord {:mvn/version "1.3.0"},
+   :coord-id {:mvn/version "1.3.0"},
+   :include false,
+   :reason :use-top}
+  {:path [cider/cider-nrepl],
+   :lib nrepl/nrepl,
+   :coord {:mvn/version "0.6.0", :exclusions #{org.clojure/clojure}},
+   :use-coord
+   {:mvn/version "0.6.0", :exclusions #{org.clojure/clojure}},
+   :coord-id {:mvn/version "0.6.0"},
+   :include false,
+   :reason :use-top}
+  {:path [me.raynes/fs org.apache.commons/commons-compress],
+   :lib org.tukaani/xz,
+   :coord {:mvn/version "1.5"},
+   :use-coord {:mvn/version "1.5"},
+   :coord-id {:mvn/version "1.5"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.maven/maven-resolver-provider],
+   :lib org.apache.maven/maven-model,
+   :coord {:mvn/version "3.5.0"},
+   :use-coord {:mvn/version "3.5.0"},
+   :coord-id {:mvn/version "3.5.0"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.maven/maven-resolver-provider],
+   :lib org.apache.maven/maven-model-builder,
+   :coord {:mvn/version "3.5.0"},
+   :use-coord {:mvn/version "3.5.0"},
+   :coord-id {:mvn/version "3.5.0"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.maven/maven-resolver-provider],
+   :lib org.apache.maven/maven-repository-metadata,
+   :coord {:mvn/version "3.5.0"},
+   :use-coord {:mvn/version "3.5.0"},
+   :coord-id {:mvn/version "3.5.0"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.maven/maven-resolver-provider],
+   :lib org.apache.maven.resolver/maven-resolver-api,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.maven/maven-resolver-provider],
+   :lib org.apache.maven.resolver/maven-resolver-spi,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.maven/maven-resolver-provider],
+   :lib org.apache.maven.resolver/maven-resolver-util,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.maven/maven-resolver-provider],
+   :lib org.apache.maven.resolver/maven-resolver-impl,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.maven/maven-resolver-provider],
+   :lib org.codehaus.plexus/plexus-component-annotations,
+   :coord {:mvn/version "1.7.1", :exclusions #{junit/junit}},
+   :use-coord {:mvn/version "1.7.1", :exclusions #{junit/junit}},
+   :coord-id {:mvn/version "1.7.1"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.maven/maven-resolver-provider],
+   :lib org.codehaus.plexus/plexus-utils,
+   :coord {:mvn/version "3.0.24"},
+   :use-coord {:mvn/version "3.0.24"},
+   :coord-id {:mvn/version "3.0.24"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.maven/maven-resolver-provider],
+   :lib org.apache.commons/commons-lang3,
+   :coord {:mvn/version "3.5"},
+   :use-coord {:mvn/version "3.5"},
+   :coord-id {:mvn/version "3.5"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-file],
+   :lib org.apache.maven.resolver/maven-resolver-api,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-file],
+   :lib org.apache.maven.resolver/maven-resolver-spi,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-file],
+   :lib org.apache.maven.resolver/maven-resolver-util,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-http],
+   :lib org.apache.maven.resolver/maven-resolver-api,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-http],
+   :lib org.apache.maven.resolver/maven-resolver-spi,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-http],
+   :lib org.apache.maven.resolver/maven-resolver-util,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-http],
+   :lib org.apache.httpcomponents/httpclient,
+   :coord
+   {:mvn/version "4.2.6",
+    :exclusions #{commons-logging/commons-logging}},
+   :use-coord
+   {:mvn/version "4.2.6",
+    :exclusions #{commons-logging/commons-logging}},
+   :coord-id {:mvn/version "4.2.6"},
+   :include false,
+   :reason :older-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-http],
+   :lib org.slf4j/jcl-over-slf4j,
+   :coord {:mvn/version "1.6.2"},
+   :use-coord {:mvn/version "1.6.2"},
+   :coord-id {:mvn/version "1.6.2"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-wagon],
+   :lib org.apache.maven.resolver/maven-resolver-api,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-wagon],
+   :lib org.apache.maven.resolver/maven-resolver-spi,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-wagon],
+   :lib org.apache.maven.resolver/maven-resolver-util,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-wagon],
+   :lib org.apache.maven.wagon/wagon-provider-api,
+   :coord {:mvn/version "1.0"},
+   :use-coord {:mvn/version "1.0"},
+   :coord-id {:mvn/version "1.0"},
+   :include false,
+   :reason :older-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-connector-basic],
+   :lib org.apache.maven.resolver/maven-resolver-api,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-connector-basic],
+   :lib org.apache.maven.resolver/maven-resolver-spi,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-connector-basic],
+   :lib org.apache.maven.resolver/maven-resolver-util,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.wagon/wagon-provider-api],
+   :lib org.codehaus.plexus/plexus-utils,
+   :coord {:mvn/version "3.0.24"},
+   :use-coord {:mvn/version "3.0.24"},
+   :coord-id {:mvn/version "3.0.24"},
+   :include false,
+   :reason :same-version}
+  {:path [com.cemerick/pomegranate org.apache.maven.wagon/wagon-http],
+   :lib org.apache.maven.wagon/wagon-http-shared,
+   :coord {:mvn/version "2.12"},
+   :use-coord {:mvn/version "2.12"},
+   :coord-id {:mvn/version "2.12"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate org.apache.maven.wagon/wagon-http],
+   :lib org.apache.httpcomponents/httpclient,
+   :coord
+   {:mvn/version "4.5.2",
+    :exclusions #{commons-logging/commons-logging}},
+   :use-coord
+   {:mvn/version "4.5.2",
+    :exclusions #{commons-logging/commons-logging}},
+   :coord-id {:mvn/version "4.5.2"},
+   :include false,
+   :reason :older-version}
+  {:path [com.cemerick/pomegranate org.apache.maven.wagon/wagon-http],
+   :lib org.slf4j/jcl-over-slf4j,
+   :coord {:mvn/version "1.7.22"},
+   :use-coord {:mvn/version "1.7.22"},
+   :coord-id {:mvn/version "1.7.22"},
+   :include true,
+   :reason :newer-version}
+  {:path [com.cemerick/pomegranate org.apache.maven.wagon/wagon-http],
+   :lib org.codehaus.plexus/plexus-utils,
+   :coord {:mvn/version "3.0.24"},
+   :use-coord {:mvn/version "3.0.24"},
+   :coord-id {:mvn/version "3.0.24"},
+   :include false,
+   :reason :same-version}
+  {:path [com.cemerick/pomegranate org.apache.maven.wagon/wagon-http],
+   :lib org.apache.httpcomponents/httpcore,
+   :coord {:mvn/version "4.4.4"},
+   :use-coord {:mvn/version "4.4.4"},
+   :coord-id {:mvn/version "4.4.4"},
+   :include true,
+   :reason :new-dep}
+  {:path [com.cemerick/pomegranate org.apache.maven.wagon/wagon-http],
+   :lib org.apache.maven.wagon/wagon-provider-api,
+   :coord {:mvn/version "2.12"},
+   :use-coord {:mvn/version "2.12"},
+   :coord-id {:mvn/version "2.12"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate org.apache.httpcomponents/httpclient],
+   :lib org.apache.httpcomponents/httpcore,
+   :coord {:mvn/version "4.4.6"},
+   :use-coord {:mvn/version "4.4.6"},
+   :coord-id {:mvn/version "4.4.6"},
+   :include true,
+   :reason :newer-version}
+  {:path
+   [com.cemerick/pomegranate org.apache.httpcomponents/httpclient],
+   :lib commons-logging/commons-logging,
+   :coord {:mvn/version "1.2"},
+   :use-coord {:mvn/version "1.2"},
+   :coord-id {:mvn/version "1.2"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate org.apache.httpcomponents/httpclient],
+   :lib commons-codec/commons-codec,
+   :coord {:mvn/version "1.9"},
+   :use-coord {:mvn/version "1.9"},
+   :coord-id {:mvn/version "1.9"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model],
+   :lib org.codehaus.plexus/plexus-utils,
+   :coord {:mvn/version "3.0.24"},
+   :use-coord {:mvn/version "3.0.24"},
+   :coord-id {:mvn/version "3.0.24"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model],
+   :lib org.apache.commons/commons-lang3,
+   :coord {:mvn/version "3.5"},
+   :use-coord {:mvn/version "3.5"},
+   :coord-id {:mvn/version "3.5"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder],
+   :lib org.codehaus.plexus/plexus-utils,
+   :coord {:mvn/version "3.0.24"},
+   :use-coord {:mvn/version "3.0.24"},
+   :coord-id {:mvn/version "3.0.24"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder],
+   :lib org.codehaus.plexus/plexus-interpolation,
+   :coord {:mvn/version "1.24"},
+   :use-coord {:mvn/version "1.24"},
+   :coord-id {:mvn/version "1.24"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder],
+   :lib org.codehaus.plexus/plexus-component-annotations,
+   :coord {:mvn/version "1.7.1", :exclusions #{junit/junit}},
+   :use-coord {:mvn/version "1.7.1", :exclusions #{junit/junit}},
+   :coord-id {:mvn/version "1.7.1"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder],
+   :lib org.apache.maven/maven-model,
+   :coord {:mvn/version "3.5.0"},
+   :use-coord {:mvn/version "3.5.0"},
+   :coord-id {:mvn/version "3.5.0"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder],
+   :lib org.apache.maven/maven-artifact,
+   :coord {:mvn/version "3.5.0"},
+   :use-coord {:mvn/version "3.5.0"},
+   :coord-id {:mvn/version "3.5.0"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder],
+   :lib org.apache.maven/maven-builder-support,
+   :coord {:mvn/version "3.5.0"},
+   :use-coord {:mvn/version "3.5.0"},
+   :coord-id {:mvn/version "3.5.0"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder],
+   :lib com.google.guava/guava,
+   :coord {:mvn/version "20.0"},
+   :use-coord {:mvn/version "20.0"},
+   :coord-id {:mvn/version "20.0"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder],
+   :lib org.apache.commons/commons-lang3,
+   :coord {:mvn/version "3.5"},
+   :use-coord {:mvn/version "3.5"},
+   :coord-id {:mvn/version "3.5"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-repository-metadata],
+   :lib org.codehaus.plexus/plexus-utils,
+   :coord {:mvn/version "3.0.24"},
+   :use-coord {:mvn/version "3.0.24"},
+   :coord-id {:mvn/version "3.0.24"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven.resolver/maven-resolver-spi],
+   :lib org.apache.maven.resolver/maven-resolver-api,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven.resolver/maven-resolver-util],
+   :lib org.apache.maven.resolver/maven-resolver-api,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven.resolver/maven-resolver-impl],
+   :lib org.apache.maven.resolver/maven-resolver-api,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven.resolver/maven-resolver-impl],
+   :lib org.apache.maven.resolver/maven-resolver-spi,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven.resolver/maven-resolver-impl],
+   :lib org.apache.maven.resolver/maven-resolver-util,
+   :coord {:mvn/version "1.0.3"},
+   :use-coord {:mvn/version "1.0.3"},
+   :coord-id {:mvn/version "1.0.3"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.resolver/maven-resolver-transport-http
+    org.slf4j/jcl-over-slf4j],
+   :lib org.slf4j/slf4j-api,
+   :coord {:mvn/version "1.6.2"},
+   :use-coord {:mvn/version "1.6.2"},
+   :coord-id {:mvn/version "1.6.2"},
+   :include false,
+   :reason :parent-omitted}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.wagon/wagon-http
+    org.apache.maven.wagon/wagon-http-shared],
+   :lib org.jsoup/jsoup,
+   :coord {:mvn/version "1.7.2"},
+   :use-coord {:mvn/version "1.7.2"},
+   :coord-id {:mvn/version "1.7.2"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.wagon/wagon-http
+    org.apache.maven.wagon/wagon-http-shared],
+   :lib commons-io/commons-io,
+   :coord {:mvn/version "2.5"},
+   :use-coord {:mvn/version "2.5"},
+   :coord-id {:mvn/version "2.5"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.wagon/wagon-http
+    org.apache.maven.wagon/wagon-http-shared],
+   :lib org.slf4j/slf4j-api,
+   :coord {:mvn/version "1.7.22"},
+   :use-coord {:mvn/version "1.7.22"},
+   :coord-id {:mvn/version "1.7.22"},
+   :include true,
+   :reason :new-dep}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.wagon/wagon-http
+    org.apache.maven.wagon/wagon-http-shared],
+   :lib org.apache.maven.wagon/wagon-provider-api,
+   :coord {:mvn/version "2.12"},
+   :use-coord {:mvn/version "2.12"},
+   :coord-id {:mvn/version "2.12"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven.wagon/wagon-http
+    org.slf4j/jcl-over-slf4j],
+   :lib org.slf4j/slf4j-api,
+   :coord {:mvn/version "1.7.22"},
+   :use-coord {:mvn/version "1.7.22"},
+   :coord-id {:mvn/version "1.7.22"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder
+    org.apache.maven/maven-artifact],
+   :lib org.codehaus.plexus/plexus-utils,
+   :coord {:mvn/version "3.0.24"},
+   :use-coord {:mvn/version "3.0.24"},
+   :coord-id {:mvn/version "3.0.24"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder
+    org.apache.maven/maven-artifact],
+   :lib org.apache.commons/commons-lang3,
+   :coord {:mvn/version "3.5"},
+   :use-coord {:mvn/version "3.5"},
+   :coord-id {:mvn/version "3.5"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder
+    org.apache.maven/maven-builder-support],
+   :lib org.codehaus.plexus/plexus-utils,
+   :coord {:mvn/version "3.0.24"},
+   :use-coord {:mvn/version "3.0.24"},
+   :coord-id {:mvn/version "3.0.24"},
+   :include false,
+   :reason :same-version}
+  {:path
+   [com.cemerick/pomegranate
+    org.apache.maven/maven-resolver-provider
+    org.apache.maven/maven-model-builder
+    org.apache.maven/maven-builder-support],
+   :lib org.apache.commons/commons-lang3,
+   :coord {:mvn/version "3.5"},
+   :use-coord {:mvn/version "3.5"},
+   :coord-id {:mvn/version "3.5"},
+   :include false,
+   :reason :same-version}],
+ :vmap
+ {org.clojure/clojure
+  {:versions
+   {{:mvn/version "1.10.1"}
+    {:mvn/version "1.10.1", :deps/manifest :mvn}},
+   :paths {{:mvn/version "1.10.1"} #{[]}},
+   :select {:mvn/version "1.10.1"},
+   :top true},
+  joda-time/joda-time
+  {:versions
+   {{:mvn/version "2.9.7"}
+    {:mvn/version "2.9.7", :deps/manifest :mvn}},
+   :paths {{:mvn/version "2.9.7"} #{[clj-time/clj-time]}},
+   :select {:mvn/version "2.9.7"}},
+  commons-codec/commons-codec
+  {:versions
+   {{:mvn/version "1.9"} {:mvn/version "1.9", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.9"}
+    #{[com.cemerick/pomegranate
+       org.apache.httpcomponents/httpclient]}},
+   :select {:mvn/version "1.9"}},
+  org.codehaus.plexus/plexus-component-annotations
+  {:versions
+   {{:mvn/version "1.7.1"}
+    {:mvn/version "1.7.1",
+     :exclusions #{junit/junit},
+     :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.7.1"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider]}},
+   :select {:mvn/version "1.7.1"}},
+  org.apache.commons/commons-compress
+  {:versions
+   {{:mvn/version "1.8"} {:mvn/version "1.8", :deps/manifest :mvn}},
+   :paths {{:mvn/version "1.8"} #{[me.raynes/fs]}},
+   :select {:mvn/version "1.8"}},
+  org.apache.commons/commons-lang3
+  {:versions
+   {{:mvn/version "3.5"} {:mvn/version "3.5", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "3.5"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider]}},
+   :select {:mvn/version "3.5"}},
+  org.clojure/core.specs.alpha
+  {:versions
+   {{:mvn/version "0.2.44"}
+    {:mvn/version "0.2.44", :deps/manifest :mvn}},
+   :paths {{:mvn/version "0.2.44"} #{[org.clojure/clojure]}},
+   :select {:mvn/version "0.2.44"}},
+  org.tukaani/xz
+  {:versions
+   {{:mvn/version "1.5"} {:mvn/version "1.5", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.5"}
+    #{[me.raynes/fs org.apache.commons/commons-compress]}},
+   :select {:mvn/version "1.5"}},
+  org.clojure/spec.alpha
+  {:versions
+   {{:mvn/version "0.2.176"}
+    {:mvn/version "0.2.176", :deps/manifest :mvn}},
+   :paths {{:mvn/version "0.2.176"} #{[org.clojure/clojure]}},
+   :select {:mvn/version "0.2.176"}},
+  org.apache.maven.resolver/maven-resolver-transport-wagon
+  {:versions
+   {{:mvn/version "1.0.3"}
+    {:mvn/version "1.0.3", :deps/manifest :mvn}},
+   :paths {{:mvn/version "1.0.3"} #{[com.cemerick/pomegranate]}},
+   :select {:mvn/version "1.0.3"}},
+  org.slf4j/jcl-over-slf4j
+  {:versions
+   {{:mvn/version "1.6.2"} {:mvn/version "1.6.2", :deps/manifest :mvn},
+    {:mvn/version "1.7.22"}
+    {:mvn/version "1.7.22", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.7.22"}
+    #{[com.cemerick/pomegranate org.apache.maven.wagon/wagon-http]},
+    {:mvn/version "1.6.2"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven.resolver/maven-resolver-transport-http]}},
+   :select {:mvn/version "1.7.22"}},
+  org.apache.maven.wagon/wagon-provider-api
+  {:versions
+   {{:mvn/version "2.12"} {:mvn/version "2.12", :deps/manifest :mvn}},
+   :paths {{:mvn/version "2.12"} #{[com.cemerick/pomegranate]}},
+   :select {:mvn/version "2.12"}},
+  org.apache.maven.resolver/maven-resolver-transport-http
+  {:versions
+   {{:mvn/version "1.0.3"}
+    {:mvn/version "1.0.3", :deps/manifest :mvn}},
+   :paths {{:mvn/version "1.0.3"} #{[com.cemerick/pomegranate]}},
+   :select {:mvn/version "1.0.3"}},
+  org.apache.maven/maven-model-builder
+  {:versions
+   {{:mvn/version "3.5.0"}
+    {:mvn/version "3.5.0", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "3.5.0"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider]}},
+   :select {:mvn/version "3.5.0"}},
+  org.codehaus.plexus/plexus-utils
+  {:versions
+   {{:mvn/version "3.0.24"}
+    {:mvn/version "3.0.24", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "3.0.24"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider]}},
+   :select {:mvn/version "3.0.24"}},
+  org.apache.maven.resolver/maven-resolver-transport-file
+  {:versions
+   {{:mvn/version "1.0.3"}
+    {:mvn/version "1.0.3", :deps/manifest :mvn}},
+   :paths {{:mvn/version "1.0.3"} #{[com.cemerick/pomegranate]}},
+   :select {:mvn/version "1.0.3"}},
+  commons-io/commons-io
+  {:versions
+   {{:mvn/version "2.5"} {:mvn/version "2.5", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "2.5"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven.wagon/wagon-http
+       org.apache.maven.wagon/wagon-http-shared]}},
+   :select {:mvn/version "2.5"}},
+  org.apache.maven.wagon/wagon-http-shared
+  {:versions
+   {{:mvn/version "2.12"} {:mvn/version "2.12", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "2.12"}
+    #{[com.cemerick/pomegranate org.apache.maven.wagon/wagon-http]}},
+   :select {:mvn/version "2.12"}},
+  clj-time/clj-time
+  {:versions
+   {{:mvn/version "0.14.2"}
+    {:mvn/version "0.14.2", :deps/manifest :mvn}},
+   :paths {{:mvn/version "0.14.2"} #{[]}},
+   :select {:mvn/version "0.14.2"},
+   :top true},
+  org.apache.httpcomponents/httpcore
+  {:versions
+   {{:mvn/version "4.4.4"} {:mvn/version "4.4.4", :deps/manifest :mvn},
+    {:mvn/version "4.4.6"}
+    {:mvn/version "4.4.6", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "4.4.6"}
+    #{[com.cemerick/pomegranate org.apache.httpcomponents/httpclient]},
+    {:mvn/version "4.4.4"}
+    #{[com.cemerick/pomegranate org.apache.maven.wagon/wagon-http]}},
+   :select {:mvn/version "4.4.6"}},
+  org.apache.maven.resolver/maven-resolver-api
+  {:versions
+   {{:mvn/version "1.0.3"}
+    {:mvn/version "1.0.3", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.0.3"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider]}},
+   :select {:mvn/version "1.0.3"}},
+  org.apache.maven/maven-resolver-provider
+  {:versions
+   {{:mvn/version "3.5.0"}
+    {:mvn/version "3.5.0", :deps/manifest :mvn}},
+   :paths {{:mvn/version "3.5.0"} #{[com.cemerick/pomegranate]}},
+   :select {:mvn/version "3.5.0"}},
+  commons-logging/commons-logging
+  {:versions
+   {{:mvn/version "1.2"} {:mvn/version "1.2", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.2"}
+    #{[com.cemerick/pomegranate
+       org.apache.httpcomponents/httpclient]}},
+   :select {:mvn/version "1.2"}},
+  com.google.guava/guava
+  {:versions
+   {{:mvn/version "20.0"} {:mvn/version "20.0", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "20.0"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider
+       org.apache.maven/maven-model-builder]}},
+   :select {:mvn/version "20.0"}},
+  org.apache.maven.resolver/maven-resolver-spi
+  {:versions
+   {{:mvn/version "1.0.3"}
+    {:mvn/version "1.0.3", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.0.3"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider]}},
+   :select {:mvn/version "1.0.3"}},
+  org.apache.maven.wagon/wagon-http
+  {:versions
+   {{:mvn/version "2.12"} {:mvn/version "2.12", :deps/manifest :mvn}},
+   :paths {{:mvn/version "2.12"} #{[com.cemerick/pomegranate]}},
+   :select {:mvn/version "2.12"}},
+  cider/cider-nrepl
+  {:versions
+   {{:mvn/version "0.23.0-SNAPSHOT"}
+    {:mvn/version "0.23.0-SNAPSHOT", :deps/manifest :mvn}},
+   :paths {{:mvn/version "0.23.0-SNAPSHOT"} #{[]}},
+   :select {:mvn/version "0.23.0-SNAPSHOT"},
+   :top true},
+  com.cemerick/pomegranate
+  {:versions
+   {{:mvn/version "0.4.0"}
+    {:mvn/version "0.4.0", :deps/manifest :mvn}},
+   :paths {{:mvn/version "0.4.0"} #{[]}},
+   :select {:mvn/version "0.4.0"},
+   :top true},
+  org.codehaus.plexus/plexus-interpolation
+  {:versions
+   {{:mvn/version "1.24"} {:mvn/version "1.24", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.24"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider
+       org.apache.maven/maven-model-builder]}},
+   :select {:mvn/version "1.24"}},
+  org.apache.httpcomponents/httpclient
+  {:versions
+   {{:mvn/version "4.5.3"}
+    {:mvn/version "4.5.3", :deps/manifest :mvn}},
+   :paths {{:mvn/version "4.5.3"} #{[com.cemerick/pomegranate]}},
+   :select {:mvn/version "4.5.3"}},
+  compliment/compliment
+  {:versions
+   {{:mvn/version "0.3.6"}
+    {:mvn/version "0.3.6", :deps/manifest :mvn}},
+   :paths {{:mvn/version "0.3.6"} #{[]}},
+   :select {:mvn/version "0.3.6"},
+   :top true},
+  org.tcrawley/dynapath
+  {:versions
+   {{:mvn/version "0.2.5"}
+    {:mvn/version "0.2.5", :deps/manifest :mvn}},
+   :paths {{:mvn/version "0.2.5"} #{[]}},
+   :select {:mvn/version "0.2.5"},
+   :top true},
+  org.jsoup/jsoup
+  {:versions
+   {{:mvn/version "1.7.2"}
+    {:mvn/version "1.7.2", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.7.2"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven.wagon/wagon-http
+       org.apache.maven.wagon/wagon-http-shared]}},
+   :select {:mvn/version "1.7.2"}},
+  nrepl/nrepl
+  {:versions
+   {{:mvn/version "0.6.0"}
+    {:mvn/version "0.6.0", :deps/manifest :mvn}},
+   :paths {{:mvn/version "0.6.0"} #{[]}},
+   :select {:mvn/version "0.6.0"},
+   :top true},
+  org.apache.maven.resolver/maven-resolver-connector-basic
+  {:versions
+   {{:mvn/version "1.0.3"}
+    {:mvn/version "1.0.3", :deps/manifest :mvn}},
+   :paths {{:mvn/version "1.0.3"} #{[com.cemerick/pomegranate]}},
+   :select {:mvn/version "1.0.3"}},
+  org.apache.maven.resolver/maven-resolver-impl
+  {:versions
+   {{:mvn/version "1.0.3"}
+    {:mvn/version "1.0.3", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.0.3"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider]}},
+   :select {:mvn/version "1.0.3"}},
+  org.slf4j/slf4j-api
+  {:versions
+   {{:mvn/version "1.7.22"}
+    {:mvn/version "1.7.22", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.7.22"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven.wagon/wagon-http
+       org.apache.maven.wagon/wagon-http-shared]}},
+   :select {:mvn/version "1.7.22"}},
+  org.apache.maven/maven-model
+  {:versions
+   {{:mvn/version "3.5.0"}
+    {:mvn/version "3.5.0", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "3.5.0"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider]}},
+   :select {:mvn/version "3.5.0"}},
+  org.apache.maven.resolver/maven-resolver-util
+  {:versions
+   {{:mvn/version "1.0.3"}
+    {:mvn/version "1.0.3", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "1.0.3"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider]}},
+   :select {:mvn/version "1.0.3"}},
+  me.raynes/fs
+  {:versions
+   {{:mvn/version "1.4.6"}
+    {:mvn/version "1.4.6", :deps/manifest :mvn}},
+   :paths {{:mvn/version "1.4.6"} #{[]}},
+   :select {:mvn/version "1.4.6"},
+   :top true},
+  org.apache.maven/maven-repository-metadata
+  {:versions
+   {{:mvn/version "3.5.0"}
+    {:mvn/version "3.5.0", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "3.5.0"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider]}},
+   :select {:mvn/version "3.5.0"}},
+  org.apache.maven/maven-builder-support
+  {:versions
+   {{:mvn/version "3.5.0"}
+    {:mvn/version "3.5.0", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "3.5.0"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider
+       org.apache.maven/maven-model-builder]}},
+   :select {:mvn/version "3.5.0"}},
+  org.apache.maven/maven-artifact
+  {:versions
+   {{:mvn/version "3.5.0"}
+    {:mvn/version "3.5.0", :deps/manifest :mvn}},
+   :paths
+   {{:mvn/version "3.5.0"}
+    #{[com.cemerick/pomegranate
+       org.apache.maven/maven-resolver-provider
+       org.apache.maven/maven-model-builder]}},
+   :select {:mvn/version "3.5.0"}}},
+ :exclusions
+ {[com.cemerick/pomegranate
+   org.apache.maven/maven-resolver-provider
+   org.codehaus.plexus/plexus-component-annotations]
+  #{junit/junit}}}
