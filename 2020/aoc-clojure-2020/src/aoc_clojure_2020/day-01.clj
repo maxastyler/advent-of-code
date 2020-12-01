@@ -10,8 +10,8 @@
       (lazy-cat (map #(vector (first xs) %) (rest xs)) (pairs (rest xs)))
       nil)
     (if (>= (count xs) n)
-      (lazy-cat (map #(conj % (first xs)) (uniques (rest xs) (dec n)))
-                (uniques (rest xs) n))
+      (lazy-cat (map #(conj % (first xs)) (combinations (rest xs) (dec n)))
+                (combinations (rest xs) n))
       (list))))
 
 (defn solution "get the solution for n elements" [xs n] (->> (combinations xs n)
