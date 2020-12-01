@@ -7,7 +7,8 @@
   [xs n]
   (if (= n 2)
     (if (> (count xs) 1)
-      (lazy-cat (map #(vector (first xs) %) (rest xs)) (pairs (rest xs)))
+      (lazy-cat (map #(vector (first xs) %) (rest xs))
+                (combinations (rest xs) n))
       nil)
     (if (>= (count xs) n)
       (lazy-cat (map #(conj % (first xs)) (combinations (rest xs) (dec n)))
