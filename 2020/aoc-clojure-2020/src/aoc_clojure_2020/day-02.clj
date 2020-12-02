@@ -18,8 +18,7 @@
 (defn pass-valid-2? [[mi, ma, letter, password]]
   (let [s1 (= (get password (dec mi)) letter)
         s2 (= (get password (dec ma)) letter)]
-    (and (or s1 s2) (not= s1 s2))))
-
+    (not= s1 s2)))
 
 (def part-1 (count (filter pass-valid-1? input)))
 (def part-2 (count (filter pass-valid-2? input)))

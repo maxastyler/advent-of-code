@@ -12,7 +12,7 @@ defmodule AdventOfCode.Day02 do
   def password_valid_2?(%{min: mi, max: ma, letter: letter, password: password}) do
     s1 = String.at(password, mi-1) == letter
     s2 = String.at(password, ma-1) == letter
-    (s1 or s2) and (s1 != s2)
+    s1 != s2
   end
   
   def parse_passwords(input) do
