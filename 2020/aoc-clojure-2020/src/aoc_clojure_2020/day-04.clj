@@ -16,7 +16,7 @@
 (v/def ::hgt (v/or :cm #(if-let [[_ h] (re-matches #"(\d+)cm" %)] (<= 150 (Integer/parseInt h) 193))
                    :in #(if-let [[_ h] (re-matches #"(\d+)in" %)] (<= 59 (Integer/parseInt h) 76))))
 (v/def ::hcl #(re-matches #"#[0-9a-f]{6}" %))
-(v/def ::ecl (fn [x] (some #(= x %) ["amb" "blu" "brn" "gry" "grn" "hzl" "oth"])))
+(v/def ::ecl #{"amb" "blu" "brn" "gry" "grn" "hzl" "oth"})
 (v/def ::pid #(re-matches #"\d{9}" %))
 
 (v/def ::passport (v/keys :req [::byr ::iyr ::eyr ::hgt ::hcl ::ecl ::pid]
@@ -27,3 +27,4 @@
 
 (def part-2 (-> (filter #(v/valid? ::passport %) input)
                 count))
+part-2
