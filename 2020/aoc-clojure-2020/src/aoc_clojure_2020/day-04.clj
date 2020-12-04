@@ -27,4 +27,3 @@
 
 (def part-2 (-> (filter #(v/valid? ::passport %) input)
                 count))
-part-2
