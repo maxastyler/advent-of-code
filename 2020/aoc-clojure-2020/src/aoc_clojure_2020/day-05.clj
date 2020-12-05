@@ -2,17 +2,10 @@
   (:require [aoc-clojure-2020.helpers :refer [get-input]]
             [clojure.string :as s]))
 
-(defn string-to-id [x]
-  (-> (s/replace x #"F|B|L|R" {"F" "0" "B" "1" "L" "0" "R" "1"})
-      (Integer/parseInt 2)))
-
 (def input (->> (get-input 5)
                 (s/split-lines)
-                (map string-to-id)
+                (map #(-> (s/replace % #"F|L" "0") (s/replace #"B|R" "1") (Integer/parseInt 2)))
                 sort))
 
 (def part-1 (last input))
-(def part-2 (as-> (map vector (drop 1 input) (drop-last input)) i
-              (filter #(= 2 (apply - %)) i)
-              (get (first i) 1)
-              (inc i)))
+(def part-2 (reduce #(if (> (- %2 %1) 1) (reduced (inc %1)) %2) input))
