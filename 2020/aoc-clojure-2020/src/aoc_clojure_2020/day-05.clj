@@ -12,8 +12,7 @@
                 sort))
 
 (def part-1 (last input))
-(def part-2 (as-> (map #(vector (- %1 %2) %3) (drop 1 input) (drop-last input) (range)) i
-              (filter #(not= 1 (first %)) i)
+(def part-2 (as-> (map vector (drop 1 input) (drop-last input)) i
+              (filter #(= 2 (apply - %)) i)
               (get (first i) 1)
-              (nth input i)
               (inc i)))
