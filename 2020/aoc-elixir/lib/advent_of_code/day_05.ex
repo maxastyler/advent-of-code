@@ -6,7 +6,7 @@ defmodule AdventOfCode.Day05 do
   end
 
   def part1(args) do
-    args |> String.split() |> Enum.map(&string_to_bin/1) |> Enum.sort(&>=/2) |> List.first
+    args |> String.split() |> Enum.map(&string_to_bin/1) |> Enum.max
   end
 
   def part2(args) do
