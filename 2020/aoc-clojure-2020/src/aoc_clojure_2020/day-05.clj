@@ -3,7 +3,7 @@
             [clojure.string :as s]))
 
 (def input (->> (get-input 5)
-                (s/split-lines)
+                s/split-lines
                 (map #(-> (s/replace % #"F|L" "0") (s/replace #"B|R" "1") (Integer/parseInt 2)))
                 sort))
 
