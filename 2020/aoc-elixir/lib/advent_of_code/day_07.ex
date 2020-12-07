@@ -1,5 +1,4 @@
 defmodule AdventOfCode.Day07 do
-  
   def parse_line(line) do
     [colour, contained] = Regex.run(~r/([[:alnum:]\ ]+) bags contain (.+)/,
       line, capture: :all_but_first)
