@@ -3,12 +3,12 @@ defmodule AdventOfCode.Day07 do
     [colour, contained] = Regex.run(~r/([[:alnum:]\ ]+) bags contain (.+)/,
       line, capture: :all_but_first)
     {colour, Regex.scan(~r/(\d+) ([[:alnum:]\ ]+) bag/, contained, capture: :all_but_first)
-    |> Enum.map(fn [n, c] -> {c, String.to_integer(n)} end)
-    |> Map.new}
+             |> Enum.map(fn [n, c] -> {c, String.to_integer(n)} end)
+             |> Map.new}
   end
 
   def parse_input(input) do
-    input |> String.trim |> String.split("\n") |> Enum.map(&parse_line/1) |> Map.new
+    String.trim(input) |> String.split("\n") |> Enum.map(&parse_line/1) |> Map.new
   end
 
   def contains_shiny_gold(colour, rules) do
