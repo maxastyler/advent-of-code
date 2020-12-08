@@ -43,7 +43,7 @@ defmodule AdventOfCode.Day08 do
     %{acc: acc} = 0..map_size(input)
     |> Stream.filter(&(with [op, _] <- input[&1], do: op in [:nop, :jmp], else: (nil -> nil)))
     |> Stream.map(&(Map.update(input, &1, nil, fn [:nop, n] -> [:jmp, n]
-            [:jmp, n] -> [:nop, n] end)))
+                                                  [:jmp, n] -> [:nop, n] end)))
     |> Stream.map(&Computer.run_until_exit(%Computer{input: &1}))
     |> Stream.filter(fn %{exited: :graceful} -> true
                         _ -> false end)
