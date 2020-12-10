@@ -14,15 +14,13 @@
                  (frequencies)
                  ((fn [{ones 1 threes 3}] (* ones threes)))))
 
-(def inp (mapv vector (range) input))
-
-(def count-paths (memoize
-                  (fn [[i v]]
-                    (if (>= i (dec (count inp)))
-                      1
-                      (->> (drop (inc i) inp)
-                           (take-while #(<= (- (second %) v) 3))
-                           (map count-paths)
-                           (apply +))))))
-
-(def part-2 (count-paths [0 0]))
+(def part-2 (let [inp (mapv vector (range) input)
+                  count-paths' (memoize (fn [rec [i v]]
+                                          (if (>= i (dec (count inp)))
+                                            1
+                                            (->> (drop (inc i) inp)
+                                                 (take-while #(<= (- (second %) v) 3))
+                                                 (map #(rec rec %))
+                                                 (apply +)))))
+                  count-paths #(count-paths' count-paths' %)]
+              (count-paths [0 0])))
