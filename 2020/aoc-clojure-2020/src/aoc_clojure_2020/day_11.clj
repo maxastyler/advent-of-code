@@ -1,17 +1,6 @@
 (ns aoc-clojure-2020.day-11
   (:require [aoc-clojure-2020.helpers :refer [get-input]]))
 
-(def example-input "L.LL.LL.LL
-LLLLLLL.LL
-L.L.L..L..
-LLLL.LL.LL
-L.LL.LL.LL
-L.LLLLL.LL
-..L.L.....
-LLLLLLLLLL
-L.LLLLLL.L
-L.LLLLL.LL")
-
 (defn display-state [{:keys [cells width]}]
   (clojure.string/join "\n" (map
                              #(apply str (map (fn [c] (case c :full \# :empty \L \.)) %))
@@ -53,7 +42,8 @@ L.LLLLL.LL")
                       nil
                       (drop 1 (iterate (fn [[r c]] [(+ r dr) (+ c dc)]) [r c])))))))
 
-(defn timestep [neighbour-count-func death-seats {:keys [cells cart->flat flat->cart width height] :as state}]
+(defn timestep [neighbour-count-func death-seats
+                {:keys [cells cart->flat flat->cart width height] :as state}]
   (assoc state :cells (mapv #(cond (= :no-seat %2) :no-seat
                                    (>= %1 death-seats) :empty
                                    (= 0 %1) :full true %2) (neighbour-count-func state) cells)))
