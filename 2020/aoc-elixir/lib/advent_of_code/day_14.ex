@@ -29,11 +29,31 @@ defmodule AdventOfCode.Day14 do
     end
   end
 
+  def location_mask(location, mask) do
+    for {g, i} <- String.graphemes(mask) |> Enum.reverse |> Enum.with_index, reduce: [location] do
+      acc -> case g do
+               "0" -> acc
+               "1" -> for n <- acc, do: n ||| (1 <<< i)
+               "X" -> (for n <- acc, do: [n &&& ~~~(1 <<< i), n ||| (1 <<< i)]) |> Enum.concat
+             end
+    end
+  end
+
   def part1(args) do
     {_, _, memory} = parse_input(args)
     Map.values(memory) |> Enum.sum
   end
 
   def part2(args) do
+    {_, memory} = for l <- String.trim(args) |> String.split("\n"), reduce: {"", %{}} do
+      {mask, memory} -> case l do
+                          "mask = " <> rest -> {rest, memory}
+                          mem -> with {_, loc, val} <- parse_line(mem) do
+                                   {mask, Enum.reduce(location_mask(loc, mask),memory,
+                                       fn e, a -> Map.put(a, e, val) end)}
+                                 end
+                        end
+    end
+    Map.values(memory) |> Enum.sum
   end
 end
