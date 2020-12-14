@@ -20,11 +20,11 @@ defmodule AdventOfCode.Day13 do
   end
 
   def chinese_remainder_theorem(x, this_n, [{n, a} | ns]) do
-    Stream.iterate(x, &(&1 + this_n))
-    |> Stream.filter(&(rem(&1, n) == a))
-    |> Enum.take(1)
-    |> List.first
-    |> (fn new_x, new_n, new_ns -> chinese_remainder_theorem(new_x, new_n, new_ns) end).(n * this_n, ns)
+    chinese_remainder_theorem (
+      Stream.iterate(x, &(&1 + this_n))
+      |> Stream.filter(&(rem(&1, n) == a))
+      |> Enum.take(1)
+      |> List.first), n * this_n, ns
   end
   def chinese_remainder_theorem(x, _, _), do: x
 
@@ -32,10 +32,10 @@ defmodule AdventOfCode.Day13 do
   def mod(a, b) when a < 0, do: rem(b + a, b)
 
   def part2(args) do
-    %{time: t, buses: b} = parse_input(args)
-    b = Enum.sort_by(b, fn {id, _} -> id end, &(&1 >= &2))
-    |> Enum.map(fn {id, a} -> {id, rem(a, id)} end)
+    %{buses: b} = parse_input(args)
+    b = Enum.sort_by(b, fn {id, _} -> id end, &(&1 <= &2))
+    |> Enum.map(fn {id, a} -> {id, rem(id - a, id)} end)
+    IO.inspect(b)
     chinese_remainder_theorem(0, 1, b)
-    # chinese_remainder_theorem(0, 1, [{17, 0}, {13, 11}, {19, 16}])
   end
 end
