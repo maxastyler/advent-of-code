@@ -6,7 +6,7 @@ defmodule AdventOfCode.Day13 do
       buses: String.split(ids, ",")
       |> Enum.with_index
       |> Enum.reject(fn {id, _} -> id == "x" end)
-      |> Enum.map(fn {id, t} -> {String.to_integer(id), mod(t, String.to_integer(id))} end)}
+      |> Enum.map(fn {id, t} -> {String.to_integer(id), rem(t, String.to_integer(id))} end)}
   end
   
   def part1(args) do
@@ -28,14 +28,10 @@ defmodule AdventOfCode.Day13 do
   end
   def chinese_remainder_theorem(x, _, _), do: x
 
-  def mod(a, b) when a >= 0, do: rem(a, b)
-  def mod(a, b) when a < 0, do: rem(b + a, b)
-
   def part2(args) do
     %{buses: b} = parse_input(args)
     b = Enum.sort_by(b, fn {id, _} -> id end, &(&1 <= &2))
     |> Enum.map(fn {id, a} -> {id, rem(id - a, id)} end)
-    IO.inspect(b)
     chinese_remainder_theorem(0, 1, b)
   end
 end
