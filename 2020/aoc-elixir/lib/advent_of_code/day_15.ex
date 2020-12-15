@@ -8,7 +8,7 @@ defmodule AdventOfCode.Day15 do
 
   def get_nth_turn(starter_nums, nth) do
     turns = Enum.with_index(starter_nums) |> Enum.reverse
-    last_times = for {x, i} <- turns, into: %{}, do: {x, i}
+    last_times = Map.new(turns)
     {{n, _}, _} = Stream.iterate({List.first(turns), last_times}, &take_turn/1)
     |> Enum.at(nth - Enum.count(turns))
     n
