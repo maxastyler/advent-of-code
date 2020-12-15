@@ -1,12 +1,10 @@
 defmodule AdventOfCode.Day15 do
   def take_turn({{value, turn}, last_times}) do
-    current_turn = turn + 1
     spoken_when = Map.get(last_times, value)
     if spoken_when do
-      new_val = turn - spoken_when
-      {{new_val, current_turn}, Map.put(last_times, value, turn)}
+      {{turn - spoken_when, turn + 1}, Map.put(last_times, value, turn)}
     else
-      {{0, current_turn}, Map.put(last_times, value, turn)}
+      {{0, turn + 1}, Map.put(last_times, value, turn)}
     end
   end
 
