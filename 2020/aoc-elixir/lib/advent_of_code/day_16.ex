@@ -5,13 +5,6 @@ defmodule AdventOfCode.Day16 do
     end
   end
 
-  @doc "returns a list of the invalid elements from the ticket"
-  def invalid_ticket(ticket, rules) do
-    Enum.filter(ticket, fn x ->
-      not Enum.any?(Enum.flat_map(rules, fn {_, rs} -> rs end), &(x in &1))
-    end)
-  end
-
   @doc "returns a tuple of {[{description, [rules]}], my_ticket, other_tickets}"
   def parse_input(input) do
     [[rules, my_ticket, other_tickets]] =
@@ -27,6 +20,13 @@ defmodule AdventOfCode.Day16 do
           String.to_integer(c)..String.to_integer(d)
         ]}
      end, parse_ticket(my_ticket), String.split(other_tickets) |> Enum.map(&parse_ticket/1)}
+  end
+
+  @doc "returns a list of the invalid elements from the ticket"
+  def invalid_ticket(ticket, rules) do
+    Enum.filter(ticket, fn x ->
+      not Enum.any?(Enum.flat_map(rules, fn {_, rs} -> rs end), &(x in &1))
+    end)
   end
 
   @doc "does the given rule match the set?"
