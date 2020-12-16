@@ -29,33 +29,35 @@ defmodule AdventOfCode.Day16 do
      end, parse_ticket(my_ticket), String.split(other_tickets) |> Enum.map(&parse_ticket/1)}
   end
 
+  @doc "does the given rule match the set?"
+  def rule_matches_set({_, [r1, r2]}, set), do: Enum.all?(set, &(&1 in r1 or &1 in r2))
+
+  @doc "get the allowed positions for the given set of rules and tickets"
+  def rule_positions(rules, tickets) do
+    pos_sets = for t <- Enum.zip(tickets), do: Tuple.to_list(t) |> MapSet.new()
+
+    for {desc, _} = rule <- rules do
+      {desc,
+       Enum.with_index(pos_sets)
+       |> Enum.filter(&rule_matches_set(rule, elem(&1, 0)))
+       |> Enum.map(&elem(&1, 1))}
+    end
+  end
+
   def part1(args) do
     {rules, _, other_tickets} = parse_input(args)
 
     other_tickets |> Enum.flat_map(&invalid_ticket(&1, rules)) |> Enum.sum()
   end
 
-  @doc "does the given rule match the set?"
-  def rule_matches_set({_, [r1, r2]}, set), do: Enum.all?(set, &(&1 in r1 or &1 in r2))
-
   def part2(args) do
-    {rules, my_ticket, [h | _] = other_tickets} = parse_input(args)
+    {rules, my_ticket, other_tickets} = parse_input(args)
 
     other_tickets = Enum.filter(other_tickets, &([] == invalid_ticket(&1, rules)))
 
-    pos_sets =
-      for ticket <- other_tickets, reduce: List.duplicate(MapSet.new(), Enum.count(h)) do
-        acc -> Enum.zip(acc, ticket) |> Enum.map(fn {s, t} -> MapSet.put(s, t) end)
-      end
-
     {fields, _} =
       for {desc, allowed_positions} <-
-            Enum.map(rules, fn {desc, _} = rule ->
-              {desc,
-               Enum.with_index(pos_sets)
-               |> Enum.filter(&rule_matches_set(rule, elem(&1, 0)))
-               |> Enum.map(&elem(&1, 1))}
-            end)
+            rule_positions(rules, other_tickets)
             |> Enum.sort_by(&Enum.count(elem(&1, 1))),
           reduce: {%{}, MapSet.new()} do
         {fields, used} ->
