@@ -7,22 +7,21 @@ defmodule AdventOfCode.Day21 do
   end
 
   def solve_allergens(allergens) do
+    %{true => solvable} = parted = Enum.group_by(allergens, &(Enum.count(elem(&1, 1)) == 1))
+
     {solved, to_remove} =
-      for {a, i} <- Enum.filter(allergens, fn {_, i} -> Enum.count(i) == 1 end),
+      for {a, i} <- solvable,
           reduce: {%{}, MapSet.new()} do
         {solved, to_remove} ->
           ingredient = MapSet.to_list(i) |> List.first()
           {Map.put(solved, a, ingredient), MapSet.put(to_remove, ingredient)}
       end
 
-    filtered =
-      Enum.reject(allergens, fn {_, i} -> Enum.count(i) == 1 end)
-      |> Enum.map(fn {a, i} -> {a, MapSet.difference(i, to_remove)} end)
+    filtered = for {a, i} <- Map.get(parted, false, []), do: {a, MapSet.difference(i, to_remove)}
 
-    if Enum.count(filtered) == 0 do
-      solved
-    else
-      Map.merge(solved, solve_allergens(filtered))
+    case Enum.count(filtered) do
+      0 -> solved
+      _ -> Map.merge(solved, solve_allergens(filtered))
     end
   end
 
@@ -56,10 +55,9 @@ defmodule AdventOfCode.Day21 do
   def part2(args) do
     {_, allergen_map} = parse_ingredients(args)
 
-    dangerous =
-      solve_allergens(allergen_map)
-      |> Enum.sort_by(&elem(&1, 0))
-      |> Enum.map(&elem(&1, 1))
-      |> Enum.join(",")
+    solve_allergens(allergen_map)
+    |> Enum.sort_by(&elem(&1, 0))
+    |> Enum.map(&elem(&1, 1))
+    |> Enum.join(",")
   end
 end
