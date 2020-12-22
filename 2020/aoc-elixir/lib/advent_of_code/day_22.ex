@@ -17,7 +17,8 @@ defmodule AdventOfCode.Day22 do
     |> play_game_p1()
   end
 
-  def play_game_p1({d1, d2}), do: d1 ++ d2
+  def play_game_p1({d1, []}), do: {:p1, d1}
+  def play_game_p1({[], d2}), do: {:p2, d2}
 
   def play_round_p2({[c1 | d1], [c2 | d2]}) do
     cond do
@@ -37,27 +38,17 @@ defmodule AdventOfCode.Day22 do
 
   def play_game_p2({d1, d2} = state, history \\ MapSet.new()) do
     cond do
+      d1 == [] -> {:p2, d2}
+      d2 == [] -> {:p1, d1}
       state in history -> {:p1, d1 ++ d2}
-      length(d1) == 0 -> {:p2, d2}
-      length(d2) == 0 -> {:p1, d1}
       true -> play_game_p2(play_round_p2(state), MapSet.put(history, state))
     end
   end
 
-  def part1(args) do
-    for {v, i} <- play_game_p1(parse_input(args)) |> Enum.reverse() |> Enum.with_index(1),
-        reduce: 0 do
-      s -> s + v * i
-    end
+  def score_game({_, cards}) do
+    for {v, i} <- Enum.reverse(cards) |> Enum.with_index(1), reduce: 0, do: (s -> s + v * i)
   end
 
-  def part2(args) do
-    for {v, i} <-
-          elem(play_game_p2(parse_input(args)), 1)
-          |> Enum.reverse()
-          |> Enum.with_index(1),
-        reduce: 0 do
-      s -> s + v * i
-    end
-  end
+  def part1(args), do: parse_input(args) |> play_game_p1() |> score_game()
+  def part2(args), do: parse_input(args) |> play_game_p2() |> score_game()
 end
