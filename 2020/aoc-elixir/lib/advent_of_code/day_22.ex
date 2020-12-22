@@ -23,7 +23,7 @@ defmodule AdventOfCode.Day22 do
   def play_round_p2({[c1 | d1], [c2 | d2]}) do
     cond do
       length(d1) >= c1 and length(d2) >= c2 ->
-        case play_game_p2({Enum.slice(d1, 0, c1), Enum.slice(d2, 0, c2)}) do
+        case play_game_p2({Enum.take(d1, c1), Enum.take(d2, c2)}) do
           {:p1, _} -> {d1 ++ [c1, c2], d2}
           {:p2, _} -> {d1, d2 ++ [c2, c1]}
         end
