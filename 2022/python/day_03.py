@@ -21,7 +21,7 @@ with open("../inputs/day_03") as f:
     print(
         sum(
             priority(badge)
-            for i in range(len(input) // 3)
-            for badge in find_badge(input[i * 3 : i * 3 + 3])
+            for i in range(0, len(input), 3)
+            for badge in find_badge(input[i : i + 3])
         )
     )
