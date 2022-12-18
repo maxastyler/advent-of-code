@@ -1,6 +1,6 @@
-import itertools
 import re
-from typing import Self
+from typing import Iterable
+import itertools as it
 
 from attrs import frozen, field, evolve
 from pyrsistent import pvector, pset, pmap, m, freeze
@@ -8,59 +8,146 @@ from pyrsistent.typing import PVector, PSet, PMap
 
 
 @frozen
+class Agent:
+    time_left: int = field()
+    position: str = field()
+
+
+def split_agents(
+    agents: Iterable[Agent],
+) -> tuple[int, PVector[Agent], PVector[Agent]]:
+    """Splits the agents into (need task, have task)"""
+    min_time = min(a.time_left for a in agents)
+    return (
+        min_time,
+        pvector(
+            evolve(a, time_left=0) for a in agents if a.time_left == min_time
+        ),
+        pvector(
+            evolve(a, time_left=a.time_left - min_time)
+            for a in agents
+            if a.time_left != min_time
+        ),
+    )
+
+
+@frozen
 class PuzzleState:
-    positions: PVector[tuple[str, int]] = field()
+    agents: PVector[Agent] = field()
     time_left: int = field()
     turned_on: PSet[str] = field()
     flow: int = field()
     released: int = field()
 
-    def next_action(
-        self, graph: PMap[str, tuple[int, PMap[str, int]]]
-    ) -> Self | tuple[Self, PVector[str]]:
+    def score(self, graph: PMap[str, tuple[int, PMap[str, int]]]) -> int:
         if self.time_left <= 0:
-            return Self
-        elif len(graph) == len(self.turned_on):
-            return evolve(
-                self, released=self.released + self.flow * self.time_left, time_left=0
-            )
-        else:
-            min_t = min(v for (_, v) in self.positions)
-            if min_t >= self.time_left:
-                return evolve(
-                    self,
-                    released=self.released + self.flow * self.time_left,
-                    time_left=0,
-                )
-            min_keys = pvector(k for (k, v) in self.positions if v == min_t)
-            bigger_positions = pvector(
-                (k, v - min_t) for (k, v) in self.positions if v > min_t
-            )
-            return (
-                PuzzleState(
-                    positions=bigger_positions,
-                    time_left=self.time_left - min_t,
-                    turned_on=self.turned_on.union(min_keys),
-                    flow=self.flow
-                    + sum(
-                        graph[i][0] for i in set(min_keys) if i not in self.turned_on
-                    ),
-                    released=self.released + self.flow * min_t,
-                ),
-                min_keys,
-            )
+            return self.released
+        (agent_time, ready, active) = split_agents(self.agents)
+        if agent_time >= self.time_left or len(self.turned_on) == len(graph):
+            return self.released + (self.flow * self.time_left)
+        time_left = self.time_left - agent_time
+        turned_on = self.turned_on
+        flow = self.flow
+        for a in ready:
+            if a.position not in turned_on:
+                flow += graph[a.position][0]
+                turned_on = turned_on.add(a.position)
 
-    def get_best_score(self, graph: PMap[str, tuple[int, PMap[str, int]]]) -> int:
-        next_action = self.next_action(graph)
-        if isinstance(next_action, PuzzleState):
-            return next_action.released
+        targets = [k for k in graph.keys() if k not in turned_on]
+        max_score = 0
+        for new_positions in it.product(*([targets] * len(ready))):
+            if any(
+                (graph[a.position][1][pos] + 1 < time_left)
+                for a, pos in zip(ready, new_positions)
+            ):
+                active = active.extend(
+                    Agent(graph[a.position][1][pos], pos)
+                    for a, pos in zip(ready, new_positions)
+                )
+                max_score = max(
+                    PuzzleState(
+                        agents=active,
+                        time_left=time_left,
+                        turned_on=turned_on,
+                        flow=flow,
+                        released=self.released,
+                    ).score(graph),
+                    max_score,
+                )
+        if max_score == 0:
+            return self.released + (self.flow * self.time_left)
         else:
-            (state, positions) = next_action
-            max_score = 0
-            for keys in itertools.product(*[graph[i][1].items() for i in positions]):
-                if any(t+1 < state.time_left for (k, t) in keys):
-                    max_score = max(max_score, evolve(state, positions = state.positions.extend(pvector(keys))).get_best_score(graph))
             return max_score
+
+
+# @frozen
+# class PuzzleState:
+#     positions: PVector[tuple[str, int]] = field()
+#     time_left: int = field()
+#     turned_on: PSet[str] = field()
+#     flow: int = field()
+#     released: int = field()
+
+#     def next_action(
+#         self, graph: PMap[str, tuple[int, PMap[str, int]]]
+#     ) -> "PuzzleState" | tuple["PuzzleState", PVector[str]]:
+#         if self.time_left <= 0:
+#             return self
+#         elif len(graph) == len(self.turned_on):
+#             return evolve(
+#                 self,
+#                 released=self.released + self.flow * self.time_left,
+#                 time_left=0,
+#             )
+#         else:
+#             min_t = min(v for (_, v) in self.positions)
+#             if min_t >= self.time_left:
+#                 return evolve(
+#                     self,
+#                     released=self.released + self.flow * self.time_left,
+#                     time_left=0,
+#                 )
+#             min_keys = pvector(k for (k, v) in self.positions if v == min_t)
+#             bigger_positions = pvector(
+#                 (k, v - min_t) for (k, v) in self.positions if v > min_t
+#             )
+#             return (
+#                 PuzzleState(
+#                     positions=bigger_positions,
+#                     time_left=self.time_left - min_t,
+#                     turned_on=self.turned_on.union(min_keys),
+#                     flow=self.flow
+#                     + sum(
+#                         graph[i][0]
+#                         for i in set(min_keys)
+#                         if i not in self.turned_on
+#                     ),
+#                     released=self.released + self.flow * min_t,
+#                 ),
+#                 min_keys,
+#             )
+
+#     def get_best_score(
+#         self, graph: PMap[str, tuple[int, PMap[str, int]]]
+#     ) -> int:
+#         next_action = self.next_action(graph)
+#         if isinstance(next_action, PuzzleState):
+#             return next_action.released
+#         else:
+#             (state, positions) = next_action
+#             max_score = 0
+#             for keys in itertools.product(
+#                 *[graph[i][1].items() for i in positions]
+#             ):
+#                 if any(t + 1 < state.time_left for (k, t) in keys):
+#                     max_score = max(
+#                         max_score,
+#                         evolve(
+#                             state,
+#                             positions=state.positions.extend(pvector(keys)),
+#                         ).get_best_score(graph),
+#                     )
+#             return max_score
 
 
 def parse_input(input: str) -> dict[str, tuple[int, set[str]]]:
@@ -74,7 +161,9 @@ def parse_input(input: str) -> dict[str, tuple[int, set[str]]]:
     }
 
 
-def bfs(start: str, graph: dict[str, tuple[int, set[str]]]) -> dict[str, str | None]:
+def bfs(
+    start: str, graph: dict[str, tuple[int, set[str]]]
+) -> dict[str, str | None]:
     g_score = {start: 0}
     parents = {start: None}
     next = [start]
@@ -111,7 +200,9 @@ def shorten_paths(
 ) -> dict[str, tuple[int, dict[str, int]]]:
     important = ["AA"] + [k for (k, (n, _)) in graph.items() if n > 0]
     return {
-        k: (i, neighbour_lengths(k, graph, important)) for (k, (i, _)) in graph.items()
+        k: (i, neighbour_lengths(k, graph, important))
+        for (k, (i, _)) in graph.items()
+        if k in important
     }
 
 
@@ -149,7 +240,9 @@ def best_choice(
         return maximum, [position] + max_list
 
 
-def split(state: list[tuple[str, int]]) -> tuple[set[str], list[tuple[str, int]]]:
+def split(
+    state: list[tuple[str, int]]
+) -> tuple[set[str], list[tuple[str, int]]]:
     timed_out = set()
     rest = []
     for (k, t) in state:
@@ -160,12 +253,19 @@ def split(state: list[tuple[str, int]]) -> tuple[set[str], list[tuple[str, int]]
     return timed_out, rest
 
 
-if __name__ == "__main__":
-    with open("../inputs/day_16") as f:
-        inp = parse_input(f.read())
-
-        graph = shorten_paths(inp)
-        print(best_choice(graph, set()))
-        # print(
-        #     PuzzleState(pvector([("AA", 3), ("AA", 2)]), 26, pset(), 0, 0).get_best_score(freeze(graph))
-        # )
+with open("../inputs/day_16") as f:
+    inp = parse_input(f.read())
+    graph = shorten_paths(inp)
+    pstate = PuzzleState(
+        agents=pvector([Agent(0, "AA")]),
+        time_left=30,
+        turned_on=pset("AA"),
+        flow=0,
+        released=0,
+    )
+    pstate.score(graph)
+    # print(best_choice(graph, set()))
+    # pstate.score(graph)
+    # print(
+    #     PuzzleState(pvector([("AA", 3), ("AA", 2)]), 26, pset(), 0, 0).get_best_score(freeze(graph))
+    # )

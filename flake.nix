@@ -11,7 +11,8 @@
           buildInputs = with pkgs;
             [
               (python310.withPackages
-                (ps: with ps; [ pyright black pyrsistent numpy ]))
+                (ps: with ps; [ pyright black pyrsistent numpy attrs]))
+              nodejs
             ];
         };
       });
