@@ -18,9 +18,8 @@
                     (match queue
                       [(list* current tail)
                        (let* ([tent-d (+ 1 (hash-ref distances current))]
-                              [neighbours
-                               (filter (λ (e) (< tent-d (hash-ref distances e +inf.0)))
-                                       (set->list (cdr (hash-ref graph current (set)))))]
+                              [neighbours                               (filter (λ (e) (< tent-d (hash-ref distances e +inf.0)))
+                                                                                (set->list (cdr (hash-ref graph current (set)))))]
                               [new-queue (append tail (filter (λ (e) (not (member e tail))) neighbours))]
                               [new-distances (foldl (λ (v acc) (hash-set acc v tent-d)) distances neighbours)])
                          (inner new-queue new-distances))]
@@ -31,53 +30,47 @@
   (letrec ([important-nodes (cons "AA" (filter string?
                                                (hash-map graph (λ (k v) (if (> (car v) 0) k null)))))]
            [important-distances (λ (n) (let ([distances (hash-map/copy (bfs graph n) (λ (k v) (values k (+ v 1))))])
-                                         (cons n (foldl (λ (v acc) (if (equal? n v) acc
-                                                                       (hash-set acc v (hash-ref distances v))))
-                                                        (hash) important-nodes))))])
+                                         (cons n (cons (car (hash-ref graph n))
+                                                       (foldl (λ (v acc) (if (equal? n v) acc
+                                                                             (hash-set acc v (hash-ref distances v))))
+                                                              (hash) important-nodes)))))])
     (make-immutable-hash (map important-distances important-nodes))))
 
-(define (prod . ls)
-  (match ls
-    [(list f) (map list f)]
-    [(list* f r) (let* ([inner (apply prod r)]
-                        [unflattened (map (λ (x) (map (λ (y) (cons x y)) inner)) f)])
-                   (apply append unflattened))]))
 
-(define (best-choice graph pressures time-left activated per-second total positions)
-  (cond
-    [(<= time-left 0) total]
-    [(>= (length activated) (hash-count graph)) (total . + . (per-second . * . time-left))]
-    [else (match-letrec ([time-jump (apply min (map cdr positions))]
-                         [(cons ready waiting) (foldl (λ (v acc)
-                                                        (match-let* ([(cons ready waiting) acc]
-                                                                     [(cons p pt) v]
-                                                                     [npt (- pt time-jump)])
-                                                          (if (> npt 0)
-                                                              (cons ready
-                                                                    (cons (cons p npt) waiting))
-                                                              (cons (cons p ready)
-                                                                    waiting))))
-                                                      '(() . ()) positions)]
-                         [to-open (set-subtract (hash-keys graph) activated)]
-                         [next-waiting (map (λ (x) (append x waiting))
-                                            (apply prod (map (λ (n) (hash->list (hash-ref graph n))) ready)))]
-                         [next-total (+ total (* per-second time-jump))]
-                         [(cons next-activated next-per-second)
-                          (foldl (λ (v acc) (if (member v (car acc))
-                                                acc
-                                                (cons (cons v (car acc))
-                                                      (+ (cdr acc) (hash-ref pressures v)))))
-                                 (cons activated per-second)
-                                 ready)])
-            (foldl (λ (v acc) (max acc (best-choice graph pressures
-                                                    (- time-left time-jump)
-                                                    next-activated
-                                                    next-per-second
-                                                    next-total
-                                                    v))) 0 next-waiting)
-            )]))
+(define (paths graph total-time)
+  (letrec ([i-map (make-immutable-hash (map (λ (i v) (cons v i)) (range (hash-count graph)) (hash-keys graph)))]
+           [list-to-int (λ (l) (foldl (λ (v a) (bitwise-ior
+                                                (arithmetic-shift 1 (hash-ref i-map v))
+                                                a)) 0 l))]
+           [inner (λ (pos to-go time-left rate released)
+                    (let* ([times (cdr (hash-ref graph pos))])
+                      (for*/stream ([target to-go]
+                                    #:when (< (hash-ref times target) time-left)
+                                    [path (let ([t (hash-ref times target)]
+                                                [r (car (hash-ref graph target))])
+                                            (stream-cons (cons (list target) (+ released
+                                                                                (* rate t)
+                                                                                (* (+ rate r) (- time-left t))))
+                                                         (inner target
+                                                                (set-remove to-go target)
+                                                                (- time-left t)
+                                                                (+ rate (car (hash-ref graph target)))
+                                                                (+ released (* t rate)))))])
+                        (cons (cons pos (car path)) (cdr path)))))])
+    (stream-map (λ (x) (cons (list-to-int (cdar x)) (cdr x)))
+                (inner "AA" (set-remove (apply set (hash-keys graph)) "AA") total-time 0 0))))
 
-;; (let* ([inp (input-to-map "day_16_input")]
-;;        [pressures (hash-map/copy inp (λ (k v) (values k (car v))))]
-;;        [shortened (shorten-paths inp)])
-;;   (best-choice shortened pressures 30 '("AA") 0 0 '(("AA" . 0))))
+(define (part-1 file-name)
+  (let ([i (shorten-paths (input-to-map file-name))])
+    (cdr (stream-fold (λ (v a) (if (> (cdr a) (cdr v)) a v)) '(() . 0) (paths i 30)))))
+
+(define (part-2 file-name)
+  (stream-fold (λ (v a) (if (> v a) v a)) 0 (let* ([i (shorten-paths (input-to-map file-name))]
+                                                   [memo (stream->list (paths i 26))])
+                                              (for*/stream ([a memo]
+                                                            [b memo]
+                                                            #:when (= (bitwise-and (car a) (car b)) 0))
+                                                (+ (cdr a) (cdr b))))))
+
+(part-1 "day_16_input")
+(part-2 "day_16_input")
