@@ -51,6 +51,10 @@ struct Symbol {
 }
 
 fn parse_input<'m>(input: &str, mem: &mut Mem<'m>) -> Option<(&'m [Num], &'m [Symbol])> {
+    fn add_symbol(symbols: &mut [Symbol], symbol_index: &mut usize, c: char, pos: Pos) {
+        symbols[*symbol_index] = Symbol { symbol: c, pos };
+        *symbol_index += 1;
+    }
     let (total_nums, total_symbols) = count_input(input);
     let mut num_index = 0;
     let mut symbol_index = 0;
@@ -83,13 +87,7 @@ fn parse_input<'m>(input: &str, mem: &mut Mem<'m>) -> Option<(&'m [Num], &'m [Sy
                     current_col = 0;
                 }
                 '.' => {}
-                _ => {
-                    symbols[symbol_index] = Symbol {
-                        symbol: c,
-                        pos: (current_row, current_col),
-                    };
-                    symbol_index += 1;
-                }
+                _ => add_symbol(symbols, &mut symbol_index, c, (current_row, current_col)),
             }
         }
     }
