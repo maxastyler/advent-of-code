@@ -3,6 +3,7 @@ mod day_02;
 mod day_03;
 mod input;
 
+use hard_mode::day_02 as hday_02;
 use hard_mode::day_03 as hday_03;
 use hard_mode::day_04 as hday_04;
 
@@ -16,6 +17,8 @@ fn main() {
     println!("{}", day_01::part_2(DAY_01_INPUT));
     println!("{}", day_02::part_1(DAY_02_INPUT));
     println!("{}", day_02::part_2(DAY_02_INPUT));
+    println!("{}", hday_02::part_1(DAY_02_INPUT));
+    println!("{}", hday_02::part_2(DAY_02_INPUT));
     println!("{}", day_03::part_1(DAY_03_INPUT));
     println!("{}", day_03::part_2(DAY_03_INPUT));
     println!("{}", hday_03::part_1(DAY_03_INPUT, &mut [0u8; 100000]));
