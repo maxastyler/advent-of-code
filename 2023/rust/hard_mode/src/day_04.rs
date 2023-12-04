@@ -29,8 +29,10 @@ pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
     let counts = mem.alloc_slice(input.lines().count(), |_| 1usize).unwrap();
     input.lines().enumerate().for_each(|(i, line)| {
         let n = num_wins_in_line(line);
-        let num_cards = counts[i];
-        (i + 1..(i + 1 + n)).for_each(|index_below| counts[index_below] += num_cards)
+
+        for index_below in (i + 1)..(i + 1 + n) {
+            counts[index_below] += counts[i]
+        }
     });
     counts.iter().sum()
 }
