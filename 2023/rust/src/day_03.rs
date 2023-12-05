@@ -1,5 +1,3 @@
-use std::str::from_utf8;
-
 type Pos = (usize, usize);
 
 fn distance_sq(p1: &Pos, p2: &Pos) -> usize {
@@ -114,6 +112,7 @@ mod test {
     use crate::day_03::part_2;
 
     use super::part_1;
+
     const TEST_INPUT: &'static str = "467..114..
 ...*......
 ..35..633.

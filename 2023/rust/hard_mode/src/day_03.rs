@@ -1,4 +1,4 @@
-use crate::mem::{Mem, Oom};
+use crate::mem::Mem;
 
 fn count_input(input: &str) -> (usize, usize) {
     let mut in_num = false;
@@ -108,6 +108,7 @@ pub fn part_1(input: &str, buffer: &mut [u8]) -> usize {
         .filter(|n| symbols.iter().any(|s| n.adjacent(&s.pos)))
         .fold(0, |a, v| a + v.num)
 }
+
 pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
     let mut mem = Mem::new(buffer);
     let (nums, symbols) = parse_input(input, &mut mem).unwrap();
@@ -140,8 +141,8 @@ pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
 
 #[cfg(test)]
 mod test {
-
     use super::{part_1, part_2};
+
     const TEST_INPUT: &'static str = "467..114..
 ...*......
 ..35..633.

@@ -1,12 +1,15 @@
-use core::ops::Range;
+use core::ops::{Range, Sub};
+use core::slice::SliceIndex;
 
 use crate::mem::Mem;
+
+type Map = [(Range<usize>, isize)];
 
 /// Turn input into a pair of a str of numbers and a 7 element array of maps
 fn split_input<'a>(
     input: &'a str,
     mem: &'a mut Mem,
-) -> (&'a str, [&'a [(Range<usize>, Range<usize>)]; 7]) {
+) -> (&'a str, [&'a Map; 7]) {
     let (seeds, rest) = input.split_once("\n\n").unwrap();
     let seeds = &seeds[7..];
     let mut maps = rest.split("\n\n").map(|s| {
@@ -22,14 +25,20 @@ fn split_input<'a>(
             let dest = line.next().unwrap();
             let start = line.next().unwrap();
             let length = line.next().unwrap();
-            (start..(start + length), dest..(dest + length))
+            (start..(start + length), (dest as isize) - (start as isize))
         })
-        .unwrap()
+            .unwrap()
     });
     (seeds, [(); 7].map(|_| &*maps.next().unwrap()))
 }
 
-fn translate(seed: usize, maps: &[&str]) -> usize {
+fn translate_layer(seed: usize, map: &Map) -> usize {
+    map.iter().find_map(|(source, offset)| if source.contains(&seed) {
+        seed.checked_add_signed(*offset)
+    } else { None }).unwrap_or(seed)
+}
+
+fn translate(seed: usize, maps: &[&Map]) -> usize {
     let mut current_seed = seed;
     for map in maps {
         current_seed = translate_layer(current_seed, map);
@@ -37,8 +46,9 @@ fn translate(seed: usize, maps: &[&str]) -> usize {
     current_seed
 }
 
-pub fn part_1(input: &str) -> usize {
-    let (seeds, maps) = split_input(input);
+pub fn part_1(input: &str, buffer: &mut [u8]) -> usize {
+    let mut mem = Mem::new(buffer);
+    let (seeds, maps) = split_input(input, &mut mem);
     seeds
         .split_whitespace()
         .map(|x| x.parse::<usize>().unwrap())
@@ -47,11 +57,20 @@ pub fn part_1(input: &str) -> usize {
         .unwrap()
 }
 
+pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
+    let mut mem = Mem::new(buffer);
+    let (seeds, maps) = split_input(input, &mut mem);
+    let mut seeds_iter = seeds
+        .split_whitespace()
+        .map(|x| x.parse::<usize>().unwrap());
+    while let Ok([start, length]) = seeds_iter.next_chunk::<2>() {}
+    3
+}
+
+
 #[cfg(test)]
 mod test {
     use crate::day_05::part_1;
-
-    use super::split_input;
 
     const TEST_DATA: &str = "seeds: 79 14 55 13
 
@@ -93,7 +112,9 @@ humidity-to-location map:
     }
 
     #[test]
-    fn part_1_works() {
-        assert_eq!(part_1(TEST_DATA), 35);
+    fn part_1_works()
+    {
+        let mut buffer = [0u8; 1000];
+        assert_eq!(part_1(TEST_DATA, &mut buffer), 35);
     }
 }

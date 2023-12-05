@@ -1,6 +1,6 @@
 use core::{
     marker::PhantomData,
-    mem::{align_of, size_of, transmute},
+    mem::{align_of, size_of},
     slice,
 };
 
@@ -48,9 +48,9 @@ impl<'m> Mem<'m> {
         Ok(unsafe { assigned_ptr.as_mut() }.unwrap())
     }
 
-    pub fn alloc_slice<T, F>(&mut self, length: usize, generator: F) -> Result<&'m mut [T], Oom>
-    where
-        F: Fn(usize) -> T,
+    pub fn alloc_slice<T, F>(&mut self, length: usize, mut generator: F) -> Result<&'m mut [T], Oom>
+        where
+            F: FnMut(usize) -> T,
     {
         let size = size_of::<T>() * length;
         let slice_ptr = unsafe { self.bump(size, align_of::<T>()) }? as *mut T;
@@ -73,7 +73,7 @@ impl<'m> Mem<'m> {
 #[cfg(test)]
 mod test {
     use core::{
-        alloc::{GlobalAlloc, Layout},
+        alloc::GlobalAlloc,
         mem::size_of_val,
     };
 
