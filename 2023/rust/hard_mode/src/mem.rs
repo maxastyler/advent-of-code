@@ -3,6 +3,7 @@ use core::{
     mem::{align_of, size_of},
     slice,
 };
+use core::cell::Cell;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Oom;
@@ -10,7 +11,7 @@ pub struct Oom;
 pub struct Mem<'m> {
     start: *mut u8,
     end: *mut u8,
-    alloc_ptr: *mut u8,
+    alloc_ptr: Cell<*mut u8>,
     phantom: PhantomData<&'m u8>,
 }
 
@@ -21,15 +22,15 @@ impl<'m> Mem<'m> {
         Mem {
             start,
             end,
-            alloc_ptr: end,
+            alloc_ptr: Cell::new(end),
             phantom: PhantomData,
         }
     }
 
-    unsafe fn bump(&mut self, size: usize, align: usize) -> Result<*mut u8, Oom> {
+    unsafe fn bump(&self, size: usize, align: usize) -> Result<*mut u8, Oom> {
         debug_assert!(align > 0);
         debug_assert!(align.is_power_of_two());
-        let ptr = self.alloc_ptr as usize;
+        let ptr = self.alloc_ptr.get() as usize;
         let new_ptr = ptr.checked_sub(size).ok_or(Oom)?;
         let new_ptr = new_ptr & !(align - 1);
         let start = self.start as usize;
@@ -37,18 +38,18 @@ impl<'m> Mem<'m> {
             Err(Oom)
         } else {
             let new_ptr = new_ptr as *mut u8;
-            self.alloc_ptr = new_ptr;
+            self.alloc_ptr.set(new_ptr);
             Ok(new_ptr)
         }
     }
 
-    pub fn alloc<T>(&mut self, t: T) -> Result<&'m mut T, Oom> {
+    pub fn alloc<T>(&self, t: T) -> Result<&'m mut T, Oom> {
         let assigned_ptr = unsafe { self.bump(size_of::<T>(), align_of::<T>()) }? as *mut T;
         unsafe { *assigned_ptr = t };
         Ok(unsafe { assigned_ptr.as_mut() }.unwrap())
     }
 
-    pub fn alloc_slice<T, F>(&mut self, length: usize, mut generator: F) -> Result<&'m mut [T], Oom>
+    pub fn alloc_slice<T, F>(&self, length: usize, mut generator: F) -> Result<&'m mut [T], Oom>
         where
             F: FnMut(usize) -> T,
     {
@@ -60,7 +61,7 @@ impl<'m> Mem<'m> {
         Ok(unsafe { slice::from_raw_parts_mut(slice_ptr, length) })
     }
 
-    pub fn alloc_slice_default<T: Default>(&mut self, length: usize) -> Result<&'m mut [T], Oom> {
+    pub fn alloc_slice_default<T: Default>(&self, length: usize) -> Result<&'m mut [T], Oom> {
         let size = size_of::<T>() * length;
         let slice_ptr = unsafe { self.bump(size, align_of::<T>()) }? as *mut T;
         (0..length).for_each(|i| {
