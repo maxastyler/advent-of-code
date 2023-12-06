@@ -42,6 +42,7 @@ fn main() {
         "Day 5 part 1: {}",
         hday_05::part_1(DAY_05_INPUT, &mut buffer)
     );
+    // commented out because it's slooooow
     // println!(
     //     "Day 5 part 2: {}",
     //     hday_05::part_2(DAY_05_INPUT, &mut buffer)
