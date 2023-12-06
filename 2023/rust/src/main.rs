@@ -21,8 +21,8 @@ const DAY_06_INPUT: &'static str = include_str!("data/day_06");
 
 fn main() {
     let mut buffer = [0u8; 100000];
-    println!("Day 1 part 1: {}", day_01::part_1(DAY_01_INPUT));
-    println!("Day 1 part 2: {}", day_01::part_2(DAY_01_INPUT));
+    println!("Day 1 part 1: {}", hday_01::part_1(DAY_01_INPUT));
+    println!("Day 1 part 2: {}", hday_01::part_2(DAY_01_INPUT));
     println!("Day 2 part 1: {}", hday_02::part_1(DAY_02_INPUT));
     println!("Day 2 part 2: {}", hday_02::part_2(DAY_02_INPUT));
     println!(
