@@ -1,4 +1,4 @@
-#![feature(iter_next_chunk)]
+#![feature(iter_array_chunks)]
 #![no_std]
 
 pub mod day_01;

@@ -38,7 +38,14 @@ fn main() {
         "Day 4 part 2: {}",
         hday_04::part_2(DAY_04_INPUT, &mut buffer)
     );
-    println!("Day 5 part 1: {}", day_05::part_1(DAY_05_INPUT));
+    println!(
+        "Day 5 part 1: {}",
+        hday_05::part_1(DAY_05_INPUT, &mut buffer)
+    );
+    // println!(
+    //     "Day 5 part 2: {}",
+    //     hday_05::part_2(DAY_05_INPUT, &mut buffer)
+    // );
     println!("Day 5 part 2: {}", day_05::part_2(DAY_05_INPUT));
     println!("Day 6 part 1: {}", hday_06::part_1(DAY_06_INPUT));
     println!("Day 6 part 2: {}", hday_06::part_2(DAY_06_INPUT));

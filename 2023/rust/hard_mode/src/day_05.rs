@@ -1,69 +1,8 @@
-use core::ops::{Range, Sub};
-use core::slice::SliceIndex;
+use core::ops::Range;
 
 use crate::mem::Mem;
 
 type Map = [(Range<usize>, isize)];
-
-/// Split one range by another
-/// returns (first half of cut range, second half of cut range, if the first range overlaps)
-fn split(range: Range<usize>, other: &Range<usize>) -> (Range<usize>, Option<Range<usize>>, bool) {
-    if range.start < other.start {
-        // we start before the other range
-        if range.end <= other.start {
-            (range, None, false)
-        } else {
-            (
-                range.start..other.start,
-                Some(other.start..range.end),
-                false,
-            )
-        }
-    } else if range.start < other.end {
-        // we start in the other range
-        if range.end <= other.end {
-            (range.start..range.end, None, true)
-        } else {
-            (range.start..other.end, Some(other.end..range.end), true)
-        }
-    } else {
-        // we start after the other range
-        (range, None, false)
-    }
-}
-
-fn offset(range: Range<usize>, offset: isize) -> Range<usize> {
-    range.start.checked_add_signed(offset).unwrap()..range.end.checked_add_signed(offset).unwrap()
-}
-
-struct Stack<'mem, T> {
-    buffer: &'mem mut [T],
-    top: usize,
-}
-
-impl<'mem, T> Stack<'mem, T>
-where
-    T: Default,
-{
-    fn new(buffer: &'mem mut [T]) -> Self {
-        Self { buffer, top: 0 }
-    }
-
-    fn push(&mut self, item: T) {
-        self.buffer[self.top] = item;
-        self.top += 1;
-    }
-
-    fn pop(&mut self, mut replacement: T) -> Option<T> {
-        use core::mem::swap;
-        if self.top == 0 {
-            None
-        } else {
-            swap(self.buffer.get_mut(self.top)?, &mut replacement);
-            Some(replacement)
-        }
-    }
-}
 
 /// Turn input into a pair of a str of numbers and a 7 element array of maps
 fn split_input<'a>(input: &'a str, mem: &'a Mem) -> (&'a str, [&'a Map; 7]) {
@@ -71,7 +10,6 @@ fn split_input<'a>(input: &'a str, mem: &'a Mem) -> (&'a str, [&'a Map; 7]) {
     let seeds = &seeds[7..];
     let mut maps = rest.split("\n\n").map(|s| {
         let s = s.trim_start_matches(|c: char| !c.is_ascii_digit());
-        let num_elem = s.lines().count();
         let mut s_iter = s.lines();
         mem.alloc_slice(s.lines().count(), |_| {
             let mut line = s_iter
@@ -89,29 +27,23 @@ fn split_input<'a>(input: &'a str, mem: &'a Mem) -> (&'a str, [&'a Map; 7]) {
     (seeds, [(); 7].map(|_| &*maps.next().unwrap()))
 }
 
-fn translate_layer(seed: usize, map: &Map) -> usize {
-    map.iter()
-        .find_map(|(source, offset)| {
-            if source.contains(&seed) {
-                seed.checked_add_signed(*offset)
-            } else {
-                None
-            }
-        })
-        .unwrap_or(seed)
+fn translate_layer(value: usize, layer: &Map) -> usize {
+    for (range, offset) in layer {
+        if range.contains(&value) {
+            return value.checked_add_signed(*offset).unwrap();
+        }
+    }
+    value
 }
 
-fn translate(seed: usize, maps: &[&Map]) -> usize {
-    let mut current_seed = seed;
-    for map in maps {
-        current_seed = translate_layer(current_seed, map);
-    }
-    current_seed
+fn translate(seed: usize, maps: &[&Map; 7]) -> usize {
+    maps.iter()
+        .fold(seed, |seed, map| translate_layer(seed, map))
 }
 
 pub fn part_1(input: &str, buffer: &mut [u8]) -> usize {
-    let mut mem = Mem::new(buffer);
-    let (seeds, maps) = split_input(input, &mut mem);
+    let mem = Mem::new(buffer);
+    let (seeds, maps) = split_input(input, &mem);
     seeds
         .split_whitespace()
         .map(|x| x.parse::<usize>().unwrap())
@@ -120,46 +52,21 @@ pub fn part_1(input: &str, buffer: &mut [u8]) -> usize {
         .unwrap()
 }
 
-fn mod_range(
-    map_index: usize,
-    range: Range<usize>,
-    stack: &mut Stack<(usize, Range<usize>)>,
-    maps: &[&Map],
-) -> Range<usize> {
-    let current_range = range;
-    maps.iter()
-        .enumerate()
-        .skip(map_index)
-        .for_each(|(i, &map)| {
-            map.iter().filter_map(|(range, offset)| {
-                let (new_range, rest, overlap) = split(0..3, range);
-                Some(3)
-            });
-        });
-    0..3
-}
-
 pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
     let mem = Mem::new(buffer);
     let (seeds, maps) = split_input(input, &mem);
-    let mut seeds_iter = seeds
+    seeds
         .split_whitespace()
-        .map(|x| x.parse::<usize>().unwrap());
-    let mut stack = Stack::new(mem.alloc_slice(200, |_| (0usize, (0usize..0))).unwrap());
-    let mut lowest: Option<usize> = None;
-    while let Ok([start, length]) = seeds_iter.next_chunk::<2>() {
-        stack.push((0, start..start + length));
-        while let Some((map_index, range)) = stack.pop((0, (0..0))) {
-            // let test_lowest = mod_range(map_index, range, &mut stack).start
-            lowest = lowest.map(|n| core::cmp::min(n, 3)).or(Some(3))
-        }
-    }
-    3
+        .map(|x| x.parse::<usize>().unwrap())
+        .array_chunks::<2>()
+        .flat_map(|[start, length]| (start..start + length).map(|seed| translate(seed, &maps)))
+        .min()
+        .unwrap()
 }
 
 #[cfg(test)]
 mod test {
-    use crate::day_05::{part_1, split};
+    use crate::day_05::{part_1, part_2};
 
     const TEST_DATA: &str = "seeds: 79 14 55 13
 
@@ -206,12 +113,11 @@ humidity-to-location map:
         assert_eq!(part_1(TEST_DATA, &mut buffer), 35);
     }
 
-    // #[test]
-    // fn part_2_works()
-    // {
-    //     let mut buffer = [0u8; 1000];
-    //     assert_eq!(part_2(TEST_DATA, &mut buffer), 35);
-    // }
+    #[test]
+    fn part_2_works() {
+        let mut buffer = [0u8; 1000];
+        assert_eq!(part_2(TEST_DATA, &mut buffer), 46);
+    }
 
     // #[test]
     // fn test_split() {
