@@ -1,12 +1,15 @@
+use hard_mode::day_01 as hday_01;
 use hard_mode::day_02 as hday_02;
 use hard_mode::day_03 as hday_03;
 use hard_mode::day_04 as hday_04;
 use hard_mode::day_05 as hday_05;
+use hard_mode::day_06 as hday_06;
 
 mod day_01;
 mod day_02;
 mod day_03;
 mod day_05;
+mod day_06;
 mod input;
 
 const DAY_01_INPUT: &'static str = include_str!("data/day_01");
@@ -14,6 +17,7 @@ const DAY_02_INPUT: &'static str = include_str!("data/day_02");
 const DAY_03_INPUT: &'static str = include_str!("data/day_03");
 const DAY_04_INPUT: &'static str = include_str!("data/day_04");
 const DAY_05_INPUT: &'static str = include_str!("data/day_05");
+const DAY_06_INPUT: &'static str = include_str!("data/day_06");
 
 fn main() {
     let mut buffer = [0u8; 100000];
@@ -36,4 +40,6 @@ fn main() {
     );
     println!("Day 5 part 1: {}", day_05::part_1(DAY_05_INPUT));
     println!("Day 5 part 2: {}", day_05::part_2(DAY_05_INPUT));
+    println!("Day 6 part 1: {}", hday_06::part_1(DAY_06_INPUT));
+    println!("Day 6 part 2: {}", hday_06::part_2(DAY_06_INPUT));
 }

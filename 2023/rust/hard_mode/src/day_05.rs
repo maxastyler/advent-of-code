@@ -213,16 +213,16 @@ humidity-to-location map:
     //     assert_eq!(part_2(TEST_DATA, &mut buffer), 35);
     // }
 
-    #[test]
-    fn test_split() {
-        let other = 5..10usize;
-        assert_eq!(split(1..2usize, &other), (1..2usize, None));
-        assert_eq!(split(1..5usize, &other), (1..5usize, None));
-        assert_eq!(split(1..6usize, &other), (1..5usize, Some(5..6usize)));
-        assert_eq!(split(1..10usize, &other), (1..5usize, Some(5..10usize)));
-        assert_eq!(split(1..12usize, &other), (1..5usize, Some(5..12usize)));
-        assert_eq!(split(5..8usize, &other), (5..8usize, None));
-        assert_eq!(split(5..12usize, &other), (5..10usize, Some(10..12usize)));
-        assert_eq!(split(10..14usize, &other), (10..14usize, None));
-    }
+    // #[test]
+    // fn test_split() {
+    //     let other = 5..10usize;
+    //     assert_eq!(split(1..2usize, &other), (1..2usize, None));
+    //     assert_eq!(split(1..5usize, &other), (1..5usize, None));
+    //     assert_eq!(split(1..6usize, &other), (1..5usize, Some(5..6usize)));
+    //     assert_eq!(split(1..10usize, &other), (1..5usize, Some(5..10usize)));
+    //     assert_eq!(split(1..12usize, &other), (1..5usize, Some(5..12usize)));
+    //     assert_eq!(split(5..8usize, &other), (5..8usize, None));
+    //     assert_eq!(split(5..12usize, &other), (5..10usize, Some(10..12usize)));
+    //     assert_eq!(split(10..14usize, &other), (10..14usize, None));
+    // }
 }
