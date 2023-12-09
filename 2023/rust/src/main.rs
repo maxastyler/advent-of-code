@@ -12,6 +12,7 @@ mod day_02;
 mod day_03;
 mod day_05;
 mod day_06;
+mod day_09;
 mod input;
 
 const DAY_01_INPUT: &'static str = include_str!("data/day_01");
@@ -22,6 +23,7 @@ const DAY_05_INPUT: &'static str = include_str!("data/day_05");
 const DAY_06_INPUT: &'static str = include_str!("data/day_06");
 const DAY_07_INPUT: &'static str = include_str!("data/day_07");
 const DAY_08_INPUT: &'static str = include_str!("data/day_08");
+const DAY_09_INPUT: &'static str = include_str!("data/day_09");
 
 fn main() {
     let mut buffer = [0u8; 100000];
@@ -54,8 +56,28 @@ fn main() {
     println!("Day 5 part 2: {}", day_05::part_2(DAY_05_INPUT));
     println!("Day 6 part 1: {}", hday_06::part_1(DAY_06_INPUT));
     println!("Day 6 part 2: {}", hday_06::part_2(DAY_06_INPUT));
-    println!("Day 7 part 1: {}", hday_07::part_1(DAY_07_INPUT, &mut buffer));
-    println!("Day 7 part 2: {}", hday_07::part_2(DAY_07_INPUT, &mut buffer));
-    println!("Day 8 part 1: {}", hday_08::part_1(DAY_08_INPUT, &mut buffer));
-    println!("Day 8 part 2: {}", hday_08::part_2(DAY_08_INPUT, &mut buffer));    
+    println!(
+        "Day 7 part 1: {}",
+        hday_07::part_1(DAY_07_INPUT, &mut buffer)
+    );
+    println!(
+        "Day 7 part 2: {}",
+        hday_07::part_2(DAY_07_INPUT, &mut buffer)
+    );
+    println!(
+        "Day 8 part 1: {}",
+        hday_08::part_1(DAY_08_INPUT, &mut buffer)
+    );
+    println!(
+        "Day 8 part 2: {}",
+        hday_08::part_2(DAY_08_INPUT, &mut buffer)
+    );
+    println!(
+        "Day 9 part 1: {}",
+        day_09::part_1(DAY_09_INPUT)
+    );
+    println!(
+        "Day 9 part 2: {}",
+        day_09::part_2(DAY_09_INPUT)
+    );    
 }
