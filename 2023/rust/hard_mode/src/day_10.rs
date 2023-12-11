@@ -64,7 +64,7 @@ impl<'a> Grid<'a> {
         let (r, c) = coord;
         if (r < self.rows) & (c < self.columns) {
             let index = r * (self.columns + 1) + c;
-            self.data[index..index+1].chars().next()
+            self.data[index..index + 1].chars().next()
         } else {
             None
         }

@@ -1,9 +1,9 @@
+use core::cell::Cell;
 use core::{
     marker::PhantomData,
     mem::{align_of, size_of},
     slice,
 };
-use core::cell::Cell;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Oom;
@@ -50,8 +50,8 @@ impl<'m> Mem<'m> {
     }
 
     pub fn alloc_slice<T, F>(&self, length: usize, mut generator: F) -> Result<&'m mut [T], Oom>
-        where
-            F: FnMut(usize) -> T,
+    where
+        F: FnMut(usize) -> T,
     {
         let size = size_of::<T>() * length;
         let slice_ptr = unsafe { self.bump(size, align_of::<T>()) }? as *mut T;
@@ -69,14 +69,23 @@ impl<'m> Mem<'m> {
         });
         Ok(unsafe { slice::from_raw_parts_mut(slice_ptr, length) })
     }
+
+    /// Allocate a slice from an iterator, where the length of the iterator is known beforehand
+    pub fn alloc_slice_from_iter<T>(
+        &self,
+        length: usize,
+        mut iter: impl Iterator<Item = T>,
+    ) -> Result<&'m mut [T], Oom> {
+        let size = size_of::<T>() * length;
+        let slice_ptr = unsafe { self.bump(size, align_of::<T>()) }? as *mut T;
+        (0..length).for_each(|i| unsafe { *slice_ptr.add(i) = iter.next().unwrap() });
+        Ok(unsafe { slice::from_raw_parts_mut(slice_ptr, length) })
+    }
 }
 
 #[cfg(test)]
 mod test {
-    use core::{
-        alloc::GlobalAlloc,
-        mem::size_of_val,
-    };
+    use core::{alloc::GlobalAlloc, mem::size_of_val};
 
     use crate::mem::Mem;
 
