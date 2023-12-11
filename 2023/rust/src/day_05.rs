@@ -116,7 +116,7 @@ pub fn part_1(input: &str) -> usize {
     ings.iter().map(|x| x.start).min().unwrap()
 }
 
-pub fn part_2(input: &str) -> usize {
+pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     let (seeds, maps) = parse_input(input).unwrap();
     let mut ings = seeds.chunks(2).map(|v| (v[0]..v[0] + v[1])).collect();
     for ms in maps {
@@ -166,7 +166,7 @@ humidity-to-location map:
 
     #[test]
     fn part_2_works() {
-        assert_eq!(part_2(TEST_INPUT), 46);
+        assert_eq!(part_2(TEST_INPUT, &mut []), 46);
     }
 
     #[test]

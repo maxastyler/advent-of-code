@@ -14,7 +14,7 @@ fn num_wins_in_line(line: &str) -> usize {
         .count()
 }
 
-pub fn part_1(input: &str) -> usize {
+pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     input
         .lines()
         .map(|l| match num_wins_in_line(l) {
@@ -25,7 +25,7 @@ pub fn part_1(input: &str) -> usize {
 }
 
 pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
-    let mut mem = Mem::new(buffer);
+    let mem = Mem::new(buffer);
     let counts = mem.alloc_slice(input.lines().count(), |_| 1usize).unwrap();
     input.lines().enumerate().for_each(|(i, line)| {
         let n = num_wins_in_line(line);
@@ -50,7 +50,7 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11";
 
     #[test]
     fn part_1_works() {
-        assert_eq!(part_1(TEST_INPUT), 13);
+        assert_eq!(part_1(TEST_INPUT, &mut []), 13);
     }
 
     #[test]

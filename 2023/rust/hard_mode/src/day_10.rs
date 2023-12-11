@@ -156,7 +156,7 @@ fn interior_points(area: i64, loop_length: usize) -> usize {
     area.abs() as usize + 1 - loop_length / 2
 }
 
-pub fn part_1(input: &str) -> usize {
+pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     let grid = Grid::new(input).unwrap();
     let s_pos = grid.find_position(|c| c == 'S').unwrap();
     [Dir::North, Dir::East, Dir::South, Dir::West]
@@ -173,7 +173,7 @@ pub fn part_1(input: &str) -> usize {
         .unwrap()
         / 2
 }
-pub fn part_2(input: &str, buffer: &mut [u8]) -> i64 {
+pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
     let mem = Mem::new(buffer);
     let grid = Grid::new(input).unwrap();
     let s_pos = grid.find_position(|c| c == 'S').unwrap();
@@ -193,7 +193,7 @@ pub fn part_2(input: &str, buffer: &mut [u8]) -> i64 {
     grid.follow_pipes(s_pos, direction)
         .zip(loop_slice.iter_mut())
         .for_each(|((pos, _), coord)| *coord = pos);
-    interior_points(loop_area(loop_slice), loop_slice.len()) as i64
+    interior_points(loop_area(loop_slice), loop_slice.len())
 }
 
 #[cfg(test)]
@@ -260,8 +260,8 @@ L7JLJL-JLJLJL--JLJ.L";
 
     #[test]
     fn part_1_works() {
-        assert_eq!(part_1(TEST_INPUT_1), 4);
-        assert_eq!(part_1(TEST_INPUT_2), 8);
+        assert_eq!(part_1(TEST_INPUT_1, &mut [0u8; 0]), 4);
+        assert_eq!(part_1(TEST_INPUT_2, &mut [0u8; 0]), 8);
     }
 
     #[test]

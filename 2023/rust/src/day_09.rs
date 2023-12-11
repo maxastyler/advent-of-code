@@ -24,18 +24,18 @@ fn calculate_line(line: impl Iterator<Item = i64>) -> (i64, i64) {
     (first, last)
 }
 
-pub fn part_1(input: &str) -> i64 {
+pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     input
         .lines()
         .map(|l| calculate_line(l.split_whitespace().map(|x| x.parse().unwrap())).1)
-        .sum()
+        .sum::<i64>() as usize
 }
 
-pub fn part_2(input: &str) -> i64 {
+pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     input
         .lines()
         .map(|l| calculate_line(l.split_whitespace().map(|x| x.parse().unwrap())).0)
-        .sum()
+        .sum::<i64>() as usize
 }
 
 #[cfg(test)]
@@ -47,10 +47,10 @@ mod test {
 
     #[test]
     fn part_1_works() {
-        assert_eq!(part_1(TEST_INPUT), 114);
+        assert_eq!(part_1(TEST_INPUT, &mut []), 114);
     }
     #[test]
     fn part_2_works() {
-        assert_eq!(part_2(TEST_INPUT), 2);
+        assert_eq!(part_2(TEST_INPUT, &mut []), 2);
     }
 }

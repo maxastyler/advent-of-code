@@ -35,14 +35,14 @@ fn first_and_last_digit(line: &str, pred: fn(&str) -> Option<i32>) -> i32 {
     first * 10 + last
 }
 
-pub fn part_1(input: &str) -> usize {
+pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     input
         .lines()
         .map(|l| first_and_last_digit(l, get_digit) as usize)
         .sum()
 }
 
-pub fn part_2(input: &str) -> usize {
+pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     input
         .lines()
         .map(|l| first_and_last_digit(l, get_digit_or_str) as usize)

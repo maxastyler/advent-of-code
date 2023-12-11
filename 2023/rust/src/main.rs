@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use hard_mode::day_01 as hday_01;
 use hard_mode::day_02 as hday_02;
 use hard_mode::day_03 as hday_03;
@@ -31,64 +33,40 @@ const DAY_11_INPUT: &'static str = include_str!("data/day_11");
 
 fn main() {
     let mut buffer = [0u8; 1_000_000];
-    println!("Day 1 part 1: {}", hday_01::part_1(DAY_01_INPUT));
-    println!("Day 1 part 2: {}", hday_01::part_2(DAY_01_INPUT));
-    println!("Day 2 part 1: {}", hday_02::part_1(DAY_02_INPUT));
-    println!("Day 2 part 2: {}", hday_02::part_2(DAY_02_INPUT));
-    println!(
-        "Day 3 part 1: {}",
-        hday_03::part_1(DAY_03_INPUT, &mut buffer)
-    );
-    println!(
-        "Day 3 part 2: {}",
-        hday_03::part_2(DAY_03_INPUT, &mut buffer)
-    );
-    println!("Day 4 part 1: {}", hday_04::part_1(DAY_04_INPUT));
-    println!(
-        "Day 4 part 2: {}",
-        hday_04::part_2(DAY_04_INPUT, &mut buffer)
-    );
-    println!(
-        "Day 5 part 1: {}",
-        hday_05::part_1(DAY_05_INPUT, &mut buffer)
-    );
+    run_day(hday_01::part_1, DAY_01_INPUT, &mut buffer, "1", "1");
+    run_day(hday_01::part_2, DAY_01_INPUT, &mut buffer, "1", "2");
+    run_day(hday_02::part_1, DAY_02_INPUT, &mut buffer, "2", "1");
+    run_day(hday_02::part_2, DAY_02_INPUT, &mut buffer, "2", "2");
+    run_day(hday_03::part_1, DAY_03_INPUT, &mut buffer, "3", "1");
+    run_day(hday_03::part_2, DAY_03_INPUT, &mut buffer, "3", "2");
+    run_day(hday_04::part_1, DAY_04_INPUT, &mut buffer, "4", "1");
+    run_day(hday_04::part_2, DAY_04_INPUT, &mut buffer, "4", "2");
+    run_day(hday_05::part_1, DAY_05_INPUT, &mut buffer, "5", "1");
     // commented out because it's slooooow
-    // println!(
-    //     "Day 5 part 2: {}",
-    //     hday_05::part_2(DAY_05_INPUT, &mut buffer)
-    // );
-    println!("Day 5 part 2: {}", day_05::part_2(DAY_05_INPUT));
-    println!("Day 6 part 1: {}", hday_06::part_1(DAY_06_INPUT));
-    println!("Day 6 part 2: {}", hday_06::part_2(DAY_06_INPUT));
-    println!(
-        "Day 7 part 1: {}",
-        hday_07::part_1(DAY_07_INPUT, &mut buffer)
-    );
-    println!(
-        "Day 7 part 2: {}",
-        hday_07::part_2(DAY_07_INPUT, &mut buffer)
-    );
-    println!(
-        "Day 8 part 1: {}",
-        hday_08::part_1(DAY_08_INPUT, &mut buffer)
-    );
-    println!(
-        "Day 8 part 2: {}",
-        hday_08::part_2(DAY_08_INPUT, &mut buffer)
-    );
-    println!("Day 9 part 1: {}", day_09::part_1(DAY_09_INPUT));
-    println!("Day 9 part 2: {}", day_09::part_2(DAY_09_INPUT));
-    println!("Day 10 part 1: {}", hday_10::part_1(DAY_10_INPUT));
-    println!(
-        "Day 10 part 2: {}",
-        hday_10::part_2(DAY_10_INPUT, &mut buffer)
-    );
-    println!(
-        "Day 11 part 1: {}",
-        hday_11::part_1(DAY_11_INPUT, &mut buffer)
-    );
-        println!(
-        "Day 11 part 2: {}",
-        hday_11::part_2(DAY_11_INPUT, &mut buffer)
-    );
+    // run_day(hday_05::part_2, DAY_05_INPUT, &mut buffer, "5", "2");
+    run_day(day_05::part_2, DAY_05_INPUT, &mut buffer, "5", "2");
+    run_day(hday_06::part_1, DAY_06_INPUT, &mut buffer, "6", "1");
+    run_day(hday_06::part_2, DAY_06_INPUT, &mut buffer, "6", "2");
+    run_day(hday_07::part_1, DAY_07_INPUT, &mut buffer, "7", "1");
+    run_day(hday_07::part_2, DAY_07_INPUT, &mut buffer, "7", "2");
+    run_day(hday_08::part_1, DAY_08_INPUT, &mut buffer, "8", "1");
+    run_day(hday_08::part_2, DAY_08_INPUT, &mut buffer, "8", "2");
+    run_day(day_09::part_1, DAY_09_INPUT, &mut buffer, "9", "1");
+    run_day(day_09::part_2, DAY_09_INPUT, &mut buffer, "9", "2");
+
+    run_day(hday_10::part_1, DAY_10_INPUT, &mut buffer, "10", "1");
+    run_day(hday_10::part_2, DAY_10_INPUT, &mut buffer, "10", "2");
+
+    run_day(hday_11::part_1, DAY_11_INPUT, &mut buffer, "11", "1");
+    run_day(hday_11::part_2, DAY_11_INPUT, &mut buffer, "11", "2");
+}
+
+fn run_day<F>(fun: F, input: &str, buffer: &mut [u8], day: &str, part: &str)
+where
+    F: Fn(&str, &mut [u8]) -> usize,
+{
+    let start_time = Instant::now();
+    let result = fun(input, buffer);
+    let total_time = start_time.elapsed();
+    println!("Day {} part {}: {} ({:?})", day, part, result, total_time);
 }

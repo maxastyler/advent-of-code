@@ -38,7 +38,7 @@ fn parse_line(input: &str) -> (usize, Hand) {
     (game_num.parse::<usize>().unwrap(), hand)
 }
 
-pub fn part_1(input: &str) -> usize {
+pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     let limit_hand = Hand {
         red: 12,
         green: 13,
@@ -57,7 +57,7 @@ pub fn part_1(input: &str) -> usize {
         .sum()
 }
 
-pub fn part_2(input: &str) -> usize {
+pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     input.lines().map(|l| parse_line(l).1.power()).sum()
 }
 
@@ -75,11 +75,11 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
 
     #[test]
     fn part_1_works() {
-        assert_eq!(part_1(TEST_INPUT), 8);
+        assert_eq!(part_1(TEST_INPUT, &mut []), 8);
     }
 
     #[test]
     fn part_2_works() {
-        assert_eq!(part_2(TEST_INPUT), 2286);
+        assert_eq!(part_2(TEST_INPUT, &mut []), 2286);
     }
 }

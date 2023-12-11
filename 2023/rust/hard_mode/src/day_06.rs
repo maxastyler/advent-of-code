@@ -31,7 +31,7 @@ fn find_limits(time: usize, distance: usize) -> Option<usize> {
     Some((last_t - first_t) as usize)
 }
 
-pub fn part_1(input: &str) -> usize {
+pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     parse_input(input)
         .map(|(time, distance)| find_limits(time, distance).unwrap())
         .product()
@@ -44,7 +44,7 @@ fn convert_line_to_num(line: &str) -> usize {
         .fold(0, |a, v| a * 10 + v)
 }
 
-pub fn part_2(input: &str) -> usize {
+pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     let (times, distances) = input.trim().split_once("\n").unwrap();
     find_limits(convert_line_to_num(times), convert_line_to_num(distances)).unwrap()
 }
@@ -58,11 +58,11 @@ Distance:  9  40  200";
 
     #[test]
     fn part_1_works() {
-        assert_eq!(part_1(TEST_INPUT), 288);
+        assert_eq!(part_1(TEST_INPUT, &mut []), 288);
     }
 
     #[test]
     fn part_2_works() {
-        assert_eq!(part_2(TEST_INPUT), 71503);
+        assert_eq!(part_2(TEST_INPUT, &mut []), 71503);
     }
 }
