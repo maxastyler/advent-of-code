@@ -8,6 +8,7 @@ struct Line<'a> {
 }
 
 impl<'a> Line<'a> {
+    /// Create a line from a clue string, with `replications` repeats of itself
     fn from_str_line<'b: 'a>(line: &'b str, replications: usize, mem: &'b Mem<'b>) -> Self {
         let mut filled = 0u128;
         let mut unfilled = 0u128;
@@ -43,6 +44,8 @@ impl<'a> Line<'a> {
         }
     }
 
+    /// Check whether the given bits of `num` are congruent in the
+    /// first `length_left` bits of `filled` and `unfilled`
     fn congruent(num: u128, length_left: u8, filled: u128, unfilled: u128) -> bool {
         let mask = (1 << length_left) - 1;
         let filled_congruent = mask & (num & filled) == mask & filled;
@@ -50,6 +53,8 @@ impl<'a> Line<'a> {
         filled_congruent & unfilled_congruent
     }
 
+    /// Inner helper function for counting the number of positions for the given `clues`
+    /// This is mostly there to wrap the least recently used cache
     fn cpos_inner<'b, const N: usize>(
         clues: &'b [u8],
         length_left: u8,
@@ -92,6 +97,7 @@ impl<'a> Line<'a> {
             })
     }
 
+    /// Count the number of different positions that this line can support
     fn count_positions(&self) -> usize {
         let mut lru: LRU<(&[u8], u8), usize, 60> = LRU::new();
 
