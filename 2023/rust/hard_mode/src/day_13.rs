@@ -101,7 +101,7 @@ fn evaluate_input(input: &str, smudges: usize) -> usize {
 pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     evaluate_input(input, 0)
 }
-pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
+pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     evaluate_input(input, 1)
 }
 #[cfg(test)]
