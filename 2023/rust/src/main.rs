@@ -11,6 +11,7 @@ use hard_mode::day_08 as hday_08;
 use hard_mode::day_10 as hday_10;
 use hard_mode::day_11 as hday_11;
 use hard_mode::day_12 as hday_12;
+use hard_mode::day_13 as hday_13;
 
 mod day_01;
 mod day_02;
@@ -33,6 +34,7 @@ const DAY_09_INPUT: &'static str = include_str!("data/day_09");
 const DAY_10_INPUT: &'static str = include_str!("data/day_10");
 const DAY_11_INPUT: &'static str = include_str!("data/day_11");
 const DAY_12_INPUT: &'static str = include_str!("data/day_12");
+const DAY_13_INPUT: &'static str = include_str!("data/day_13");
 
 fn run_day<F>(fun: F, input: &str, buffer: &mut [u8], day: &str, part: &str)
 where
@@ -74,4 +76,6 @@ fn main() {
     run_day(hday_11::part_2, DAY_11_INPUT, &mut buffer, "11", "2");
     run_day(hday_12::part_1, DAY_12_INPUT, &mut buffer, "12", "1");
     run_day(hday_12::part_2, DAY_12_INPUT, &mut buffer, "12", "2");
+    run_day(hday_13::part_1, DAY_13_INPUT, &mut buffer, "13", "1");
+    run_day(hday_13::part_2, DAY_13_INPUT, &mut buffer, "13", "2");
 }

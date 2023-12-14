@@ -1,4 +1,4 @@
-#![feature(iter_array_chunks, type_alias_impl_trait)]
+#![feature(iter_array_chunks, type_alias_impl_trait, array_windows)]
 #![no_std]
 
 pub mod day_01;
@@ -15,3 +15,4 @@ pub mod day_10;
 pub mod day_11;
 pub mod day_12;
 mod lru;
+pub mod day_13;
