@@ -81,30 +81,28 @@ impl<'a> Map<'a> {
     }
 }
 
+/// Create an iterator over all pairs of lines starting at `inbetween`
 fn pairs_iter(inbetween: usize, limit: usize) -> impl Iterator<Item = (usize, usize)> {
     let max_offset = (limit - inbetween).min(inbetween);
     (0..max_offset).map(move |o| (inbetween - 1 - o, inbetween + o))
 }
 
-pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
+fn evaluate_input(input: &str, smudges: usize) -> usize {
     input
         .split("\n\n")
-        .map(|m| match Map::new(m).unwrap().find_reflection(0) {
+        .map(|m| match Map::new(m).unwrap().find_reflection(smudges) {
             Some(Reflection::Vertical(col)) => col,
             Some(Reflection::Horizontal(row)) => 100 * row,
-            None => panic!("GOT AN ERROR ON INPUT: {}", m),
+            None => unreachable!(),
         })
         .sum()
 }
+
+pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
+    evaluate_input(input, 0)
+}
 pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
-    input
-        .split("\n\n")
-        .map(|m| match Map::new(m).unwrap().find_reflection(1) {
-            Some(Reflection::Vertical(col)) => col,
-            Some(Reflection::Horizontal(row)) => 100 * row,
-            None => panic!("GOT AN ERROR ON INPUT: {}", m),
-        })
-        .sum()
+    evaluate_input(input, 1)
 }
 #[cfg(test)]
 mod test {
