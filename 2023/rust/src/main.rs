@@ -10,6 +10,7 @@ use hard_mode::day_07 as hday_07;
 use hard_mode::day_08 as hday_08;
 use hard_mode::day_10 as hday_10;
 use hard_mode::day_11 as hday_11;
+use hard_mode::day_12 as hday_12;
 
 mod day_01;
 mod day_02;
@@ -17,6 +18,7 @@ mod day_03;
 mod day_05;
 mod day_06;
 mod day_09;
+// mod day_12;
 mod input;
 
 const DAY_01_INPUT: &'static str = include_str!("data/day_01");
@@ -30,6 +32,17 @@ const DAY_08_INPUT: &'static str = include_str!("data/day_08");
 const DAY_09_INPUT: &'static str = include_str!("data/day_09");
 const DAY_10_INPUT: &'static str = include_str!("data/day_10");
 const DAY_11_INPUT: &'static str = include_str!("data/day_11");
+const DAY_12_INPUT: &'static str = include_str!("data/day_12");
+
+fn run_day<F>(fun: F, input: &str, buffer: &mut [u8], day: &str, part: &str)
+where
+    F: Fn(&str, &mut [u8]) -> usize,
+{
+    let start_time = Instant::now();
+    let result = fun(input, buffer);
+    let total_time = start_time.elapsed();
+    println!("Day {} part {}: {} ({:?})", day, part, result, total_time);
+}
 
 fn main() {
     let mut buffer = [0u8; 1_000_000];
@@ -59,14 +72,6 @@ fn main() {
 
     run_day(hday_11::part_1, DAY_11_INPUT, &mut buffer, "11", "1");
     run_day(hday_11::part_2, DAY_11_INPUT, &mut buffer, "11", "2");
-}
-
-fn run_day<F>(fun: F, input: &str, buffer: &mut [u8], day: &str, part: &str)
-where
-    F: Fn(&str, &mut [u8]) -> usize,
-{
-    let start_time = Instant::now();
-    let result = fun(input, buffer);
-    let total_time = start_time.elapsed();
-    println!("Day {} part {}: {} ({:?})", day, part, result, total_time);
+    run_day(hday_12::part_1, DAY_12_INPUT, &mut buffer, "12", "1");
+    run_day(hday_12::part_2, DAY_12_INPUT, &mut buffer, "12", "2");
 }

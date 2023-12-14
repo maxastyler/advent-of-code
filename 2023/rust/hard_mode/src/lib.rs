@@ -13,3 +13,5 @@ pub mod day_09;
 mod mem;
 pub mod day_10;
 pub mod day_11;
+pub mod day_12;
+mod lru;
