@@ -16,6 +16,16 @@ impl Direction {
             Direction::West => (row, col - 1),
         }
     }
+
+    #[inline]
+    fn bit(&self) -> u8 {
+        1 << match self {
+            Direction::North => 0,
+            Direction::East => 1,
+            Direction::South => 2,
+            Direction::West => 3,
+        }
+    }
 }
 
 struct LightPath {
@@ -30,18 +40,11 @@ impl LightPath {
         (row >= 0) & (row < self.rows as i64) & (col >= 0) & (col < self.cols as i64)
     }
 
-    pub fn coord(&self, row: i64, col: i64, dir: Direction) -> bool {
+    fn coord(&self, row: i64, col: i64, dir: Direction) -> bool {
         let pos = row * self.cols as i64 + col;
-        self.light.get(pos as usize).map_or(false, |x| {
-            x & (1
-                << match dir {
-                    Direction::North => 0,
-                    Direction::East => 1,
-                    Direction::South => 2,
-                    Direction::West => 3,
-                })
-                != 0
-        })
+        self.light
+            .get(pos as usize)
+            .map_or(false, |x| x & dir.bit() != 0)
     }
 
     pub fn new<'a, 'b: 'a>(map: &'b Map<'a>) -> Self {
@@ -67,18 +70,22 @@ impl LightPath {
                         queue.push((Direction::North.next_position(pos), Direction::North));
                         dir = Direction::South
                     }
-                    ('/', _) => match dir {
-                        Direction::North => dir = Direction::East,
-                        Direction::East => dir = Direction::North,
-                        Direction::South => dir = Direction::West,
-                        Direction::West => dir = Direction::South,
-                    },
-                    ('\\', _) => match dir {
-                        Direction::North => dir = Direction::West,
-                        Direction::East => dir = Direction::South,
-                        Direction::South => dir = Direction::East,
-                        Direction::West => dir = Direction::North,
-                    },
+                    ('/', _) => {
+                        dir = match dir {
+                            Direction::North => Direction::East,
+                            Direction::East => Direction::North,
+                            Direction::South => Direction::West,
+                            Direction::West => Direction::South,
+                        }
+                    }
+                    ('\\', _) => {
+                        dir = match dir {
+                            Direction::North => Direction::West,
+                            Direction::East => Direction::South,
+                            Direction::South => Direction::East,
+                            Direction::West => Direction::North,
+                        }
+                    }
                     _ => {}
                 }
                 pos = dir.next_position(pos);
@@ -88,15 +95,9 @@ impl LightPath {
     }
 
     /// Add another light path to this
-    pub fn add_path(&mut self, path: Vec<((i64, i64), Direction)>) {
+    fn add_path(&mut self, path: Vec<((i64, i64), Direction)>) {
         for ((row, col), dir) in path {
-            self.light[row as usize * self.cols + col as usize] |= 1
-                << match dir {
-                    Direction::North => 0,
-                    Direction::East => 1,
-                    Direction::South => 2,
-                    Direction::West => 3,
-                }
+            self.light[row as usize * self.cols + col as usize] |= dir.bit()
         }
     }
 
