@@ -13,6 +13,7 @@ use hard_mode::day_11 as hday_11;
 use hard_mode::day_12 as hday_12;
 use hard_mode::day_13 as hday_13;
 use hard_mode::day_14 as hday_14;
+use hard_mode::day_15 as hday_15;
 
 mod day_01;
 mod day_02;
@@ -22,6 +23,7 @@ mod day_06;
 mod day_09;
 // mod day_12;
 mod day_14;
+mod day_15;
 mod input;
 
 const DAY_01_INPUT: &'static str = include_str!("data/day_01");
@@ -38,6 +40,7 @@ const DAY_11_INPUT: &'static str = include_str!("data/day_11");
 const DAY_12_INPUT: &'static str = include_str!("data/day_12");
 const DAY_13_INPUT: &'static str = include_str!("data/day_13");
 const DAY_14_INPUT: &'static str = include_str!("data/day_14");
+const DAY_15_INPUT: &'static str = include_str!("data/day_15");
 
 fn run_day<F>(fun: F, input: &str, buffer: &mut [u8], day: &str, part: &str)
 where
@@ -83,5 +86,8 @@ fn main() {
     run_day(hday_14::part_1, DAY_14_INPUT, &mut buffer, "14", "1");
     // Looks like the history needs dynamic memory...
     run_day(day_14::part_2, DAY_14_INPUT, &mut buffer, "14", "2");
+    run_day(hday_15::part_1, DAY_15_INPUT, &mut buffer, "15", "1");
+    run_day(day_15::part_2, DAY_15_INPUT, &mut buffer, "15", "2");
+
     println!("ALL RUN IN TOTAL OF: {:?}", start_time.elapsed());
 }
