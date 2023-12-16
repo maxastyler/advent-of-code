@@ -14,6 +14,7 @@ use hard_mode::day_12 as hday_12;
 use hard_mode::day_13 as hday_13;
 use hard_mode::day_14 as hday_14;
 use hard_mode::day_15 as hday_15;
+use hard_mode::day_16 as hday_16;
 
 mod day_01;
 mod day_02;
@@ -90,7 +91,7 @@ fn main() {
     run_day(day_14::part_2, DAY_14_INPUT, &mut buffer, "14", "2");
     run_day(hday_15::part_1, DAY_15_INPUT, &mut buffer, "15", "1");
     run_day(day_15::part_2, DAY_15_INPUT, &mut buffer, "15", "2");
-    run_day(day_16::part_1, DAY_16_INPUT, &mut buffer, "16", "1");
-    run_day(day_16::part_2, DAY_16_INPUT, &mut buffer, "16", "2");
+    run_day(hday_16::part_1, DAY_16_INPUT, &mut buffer, "16", "1");
+    run_day(hday_16::part_2, DAY_16_INPUT, &mut buffer, "16", "2");
     println!("ALL RUN IN TOTAL OF: {:?}", start_time.elapsed());
 }

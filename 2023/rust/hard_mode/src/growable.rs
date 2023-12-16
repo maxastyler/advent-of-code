@@ -37,6 +37,16 @@ impl<T, const Limit: usize> Growable<T, Limit> {
             Some(unsafe { self.start.add(index).as_mut() }.unwrap())
         }
     }
+
+    pub fn pop(&mut self) -> Option<T> {
+        if self.length > 0 {
+	    let ret_val = unsafe { self.start.add(self.length-1).read() };
+	    self.length -= 1;
+            Some(ret_val)
+        } else {
+            None
+        }
+    }
 }
 
 #[cfg(test)]

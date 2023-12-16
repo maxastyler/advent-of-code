@@ -57,10 +57,8 @@ impl LightPath {
 
     pub fn add_beam(&mut self, map: &Map, start: (i64, i64), dir: Direction) {
         let mut queue: Vec<((i64, i64), Direction)> = vec![(start, dir)];
-        let mut path = vec![];
         while let Some((mut pos, mut dir)) = queue.pop() {
             while self.in_bounds(pos) & !self.coord(pos.0, pos.1, dir) {
-                path.push((pos, dir));
                 match (map.coord(pos.0 as usize, pos.1 as usize), dir) {
                     ('-', Direction::North | Direction::South) => {
                         queue.push((Direction::East.next_position(pos), Direction::East));
@@ -88,16 +86,9 @@ impl LightPath {
                     }
                     _ => {}
                 }
+                self.light[pos.0 as usize * self.cols + pos.1 as usize] |= dir.bit();
                 pos = dir.next_position(pos);
             }
-            self.add_path(path.drain(..));
-        }
-    }
-
-    /// Add another light path to this
-    fn add_path(&mut self, path: impl Iterator<Item = ((i64, i64), Direction)>) {
-        for ((row, col), dir) in path {
-            self.light[row as usize * self.cols + col as usize] |= dir.bit()
         }
     }
 
