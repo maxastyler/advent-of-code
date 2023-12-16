@@ -28,7 +28,7 @@ fn parse_line_draws(line: &str) -> HashMap<&str, u32> {
 
 fn parse_line(line: &str) -> (u32, HashMap<&str, u32>) {
     let (g, rest) = line.split_once(": ").unwrap();
-    let game_number = (&g[5..]).parse().unwrap();
+    let game_number = g[5..].parse().unwrap();
     (game_number, parse_line_draws(rest))
 }
 

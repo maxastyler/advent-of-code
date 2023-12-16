@@ -216,7 +216,7 @@ O.#..O.#.#
                     };
                     f.write_str(s)?;
                 }
-                f.write_str("\n");
+                f.write_str("\n")?;
             }
             Ok(())
         }

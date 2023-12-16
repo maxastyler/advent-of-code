@@ -19,7 +19,7 @@ fn calculate_line(line: impl Iterator<Item = i64>) -> (i64, i64) {
     let mut last = 0;
     while let Some(seq) = stack.pop() {
         first = seq.first().unwrap() - first;
-        last = seq.last().unwrap() + last;
+        last += seq.last().unwrap();
     }
     (first, last)
 }

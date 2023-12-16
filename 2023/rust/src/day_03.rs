@@ -58,7 +58,7 @@ fn parse_line(line: &str, row: usize, nums: &mut Vec<Num>, symbols: &mut Vec<Sym
     }
 }
 
-fn parse_input<'m>(input: &'m str) -> (Vec<Num>, Vec<Symbol>) {
+fn parse_input(input: &str) -> (Vec<Num>, Vec<Symbol>) {
     let mut nums = vec![];
     let mut symbols = vec![];
     input.lines().enumerate().for_each(|(row, line)| {
@@ -67,7 +67,7 @@ fn parse_input<'m>(input: &'m str) -> (Vec<Num>, Vec<Symbol>) {
     (nums, symbols)
 }
 
-pub fn part_1(input: &'static str) -> String {
+pub fn part_1(input: &str) -> String {
     let (nums, symbols) = parse_input(input);
     format!(
         "{}",
@@ -77,7 +77,7 @@ pub fn part_1(input: &'static str) -> String {
     )
 }
 
-pub fn part_2(input: &'static str) -> String {
+pub fn part_2(input: &str) -> String {
     let (nums, symbols) = parse_input(input);
     let total: usize = symbols
         .iter()
@@ -113,7 +113,7 @@ mod test {
 
     use super::part_1;
 
-    const TEST_INPUT: &'static str = "467..114..
+    const TEST_INPUT: &str = "467..114..
 ...*......
 ..35..633.
 ......#...

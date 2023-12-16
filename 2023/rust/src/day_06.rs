@@ -1,4 +1,4 @@
-fn parse_input<'a>(input: &'a str) -> impl Iterator<Item = (usize, usize)> + 'a {
+fn parse_input(input: &str) -> impl Iterator<Item = (usize, usize)> + '_ {
     let (times, distances) = input.trim().split_once("\n").unwrap();
     let times_iterator = times
         .trim_start_matches(|c: char| !c.is_ascii_digit())

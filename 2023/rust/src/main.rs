@@ -27,22 +27,22 @@ mod day_15;
 pub mod day_16;
 mod input;
 
-const DAY_01_INPUT: &'static str = include_str!("data/day_01");
-const DAY_02_INPUT: &'static str = include_str!("data/day_02");
-const DAY_03_INPUT: &'static str = include_str!("data/day_03");
-const DAY_04_INPUT: &'static str = include_str!("data/day_04");
-const DAY_05_INPUT: &'static str = include_str!("data/day_05");
-const DAY_06_INPUT: &'static str = include_str!("data/day_06");
-const DAY_07_INPUT: &'static str = include_str!("data/day_07");
-const DAY_08_INPUT: &'static str = include_str!("data/day_08");
-const DAY_09_INPUT: &'static str = include_str!("data/day_09");
-const DAY_10_INPUT: &'static str = include_str!("data/day_10");
-const DAY_11_INPUT: &'static str = include_str!("data/day_11");
-const DAY_12_INPUT: &'static str = include_str!("data/day_12");
-const DAY_13_INPUT: &'static str = include_str!("data/day_13");
-const DAY_14_INPUT: &'static str = include_str!("data/day_14");
-const DAY_15_INPUT: &'static str = include_str!("data/day_15");
-const DAY_16_INPUT: &'static str = include_str!("data/day_16");
+const DAY_01_INPUT: &str = include_str!("data/day_01");
+const DAY_02_INPUT: &str = include_str!("data/day_02");
+const DAY_03_INPUT: &str = include_str!("data/day_03");
+const DAY_04_INPUT: &str = include_str!("data/day_04");
+const DAY_05_INPUT: &str = include_str!("data/day_05");
+const DAY_06_INPUT: &str = include_str!("data/day_06");
+const DAY_07_INPUT: &str = include_str!("data/day_07");
+const DAY_08_INPUT: &str = include_str!("data/day_08");
+const DAY_09_INPUT: &str = include_str!("data/day_09");
+const DAY_10_INPUT: &str = include_str!("data/day_10");
+const DAY_11_INPUT: &str = include_str!("data/day_11");
+const DAY_12_INPUT: &str = include_str!("data/day_12");
+const DAY_13_INPUT: &str = include_str!("data/day_13");
+const DAY_14_INPUT: &str = include_str!("data/day_14");
+const DAY_15_INPUT: &str = include_str!("data/day_15");
+const DAY_16_INPUT: &str = include_str!("data/day_16");
 
 fn run_day<F>(fun: F, input: &str, buffer: &mut [u8], day: &str, part: &str)
 where

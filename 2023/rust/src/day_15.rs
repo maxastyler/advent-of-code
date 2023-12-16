@@ -10,7 +10,7 @@ pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
 pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     let mut boxes: [Vec<(&str, u8)>; 256] = [(); 256].map(|_| vec![]);
     for inst in input.split(",") {
-        if let Some((label, lens)) = inst.split_once("=") {
+        if let Some((label, lens)) = inst.split_once('=') {
             let b = &mut boxes[HASH(label) as usize];
             let lens = lens.parse().unwrap();
             if let Some(r) = b.iter_mut().find(|(s, _)| *s == label) {

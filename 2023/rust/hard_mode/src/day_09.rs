@@ -68,11 +68,11 @@ fn choose(n: usize, k: usize) -> usize {
 // //     (3, 3)
 // // }
 
-pub fn part_1(input: &str, buffer: &mut [u8]) -> usize {
+pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     3
 }
 
-pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
+pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     3
 }
 

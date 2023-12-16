@@ -16,8 +16,8 @@ enum Direction {
 }
 
 #[derive(PartialEq, Clone)]
-struct Map {
-    pub rocks: Vec<Tile>,
+pub struct Map {
+    rocks: Vec<Tile>,
     cols: usize,
     rows: usize,
 }

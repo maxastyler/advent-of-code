@@ -12,7 +12,6 @@ pub struct Oom;
 
 pub struct Mem<'m> {
     start: *mut u8,
-    end: *mut u8,
     alloc_ptr: Cell<*mut u8>,
     phantom: PhantomData<&'m u8>,
 }
@@ -23,7 +22,6 @@ impl<'m> Mem<'m> {
         let end = unsafe { start.add(raw.len()) };
         Mem {
             start,
-            end,
             alloc_ptr: Cell::new(end),
             phantom: PhantomData,
         }

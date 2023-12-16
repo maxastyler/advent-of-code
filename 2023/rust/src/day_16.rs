@@ -101,9 +101,7 @@ impl LightPath {
     }
 
     pub fn energisation(&self) -> usize {
-        self.light
-            .iter()
-            .fold(0, |a, v| if *v == 0 { a } else { a + 1 })
+        self.light.iter().filter(|x| **x != 0).count()
     }
 }
 
