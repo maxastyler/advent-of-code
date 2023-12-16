@@ -5,6 +5,8 @@ use core::{
     slice,
 };
 
+use crate::growable::Growable;
+
 #[derive(Debug, Clone, Copy)]
 pub struct Oom;
 
@@ -80,6 +82,19 @@ impl<'m> Mem<'m> {
         let slice_ptr = unsafe { self.bump(size, align_of::<T>()) }? as *mut T;
         (0..length).for_each(|i| unsafe { *slice_ptr.add(i) = iter.next().unwrap() });
         Ok(unsafe { slice::from_raw_parts_mut(slice_ptr, length) })
+    }
+
+    pub fn alloc_growable<T, const Limit: usize>(&self) -> Result<Growable<T, Limit>, Oom> {
+        let size = size_of::<T>() * Limit;
+        let growable_ptr = unsafe { self.bump(size, align_of::<T>()) }? as *mut T;
+        Ok(unsafe { Growable::new(growable_ptr) })
+    }
+
+    pub fn clone_slice<T>(&self, slice: &[T]) -> Result<&mut [T], Oom> {
+        let size = slice.len() * size_of::<T>();
+        let new_ptr = unsafe { self.bump(size, align_of::<T>()) }? as *mut T;
+        unsafe { core::ptr::copy(slice.as_ptr(), new_ptr, slice.len()) };
+        Ok(unsafe { slice::from_raw_parts_mut(new_ptr, slice.len()) })
     }
 }
 
