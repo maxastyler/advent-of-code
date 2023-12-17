@@ -107,16 +107,17 @@ impl State {
         })
     }
 
-    fn add_neighbours_p1(
+    fn add_neighbours(
         &self,
+        min_turn_distance: u8,
+        max_straight_distance: u8,
         current_score: usize,
         map: &Map,
         g_score: &mut ScoreMap,
         queue: &mut MinHeap<(Self, usize)>,
-        prevs: &mut HashMap<State, State, BuildFNVHasher>,
     ) {
         let mut maybe_add_state = |s: State| {
-            if s.straight_len <= 3 {
+            if s.straight_len <= max_straight_distance {
                 let new_score = current_score + map.coord(s.row, s.col).unwrap() as usize;
                 if g_score.get(&s).map(|s| new_score < *s).unwrap_or(true) {
                     g_score.insert(s.clone(), new_score);
@@ -125,33 +126,7 @@ impl State {
             }
         };
 
-        let lower = if self.dir == 0 { 3 } else { self.dir - 1 };
-        self.translate(lower, map).map(&mut maybe_add_state);
-        let upper = if self.dir == 3 { 0 } else { self.dir + 1 };
-        self.translate(upper, map).map(&mut maybe_add_state);
-        self.translate(self.dir, map).map(&mut maybe_add_state);
-    }
-
-    fn add_neighbours_p2(
-        &self,
-        current_score: usize,
-        map: &Map,
-        g_score: &mut ScoreMap,
-        queue: &mut MinHeap<(Self, usize)>,
-        prevs: &mut HashMap<State, State, BuildFNVHasher>,
-    ) {
-        let mut maybe_add_state = |s: State| {
-            if s.straight_len <= 10 {
-                let new_score = current_score + map.coord(s.row, s.col).unwrap() as usize;
-                if g_score.get(&s).map(|s| new_score < *s).unwrap_or(true) {
-                    // prevs.insert(s.clone(), self.clone());
-                    g_score.insert(s.clone(), new_score);
-                    queue.insert((s, new_score), new_score);
-                }
-            }
-        };
-
-        if self.straight_len >= 4 {
+        if self.straight_len >= min_turn_distance {
             let lower = if self.dir == 0 { 3 } else { self.dir - 1 };
             self.translate(lower, map).map(&mut maybe_add_state);
             let upper = if self.dir == 3 { 0 } else { self.dir + 1 };
@@ -163,68 +138,42 @@ impl State {
 
 fn find_shortest_path<F, G>(map: &Map, neighbour_fun: F, end_fun: G) -> usize
 where
-    F: Fn(
-        State,
-        usize,
-        &Map,
-        &mut ScoreMap,
-        &mut MinHeap<(State, usize)>,
-        &mut HashMap<State, State, BuildFNVHasher>,
-    ),
+    F: Fn(State, usize, &Map, &mut ScoreMap, &mut MinHeap<(State, usize)>),
     G: Fn(&State) -> bool,
 {
-    let current = State {
-        row: 0,
-        col: 0,
-        dir: 0,
-        straight_len: 0,
-    };
-
-    let mut prevs: HashMap<State, State, BuildFNVHasher> = HashMap::with_hasher(BuildFNVHasher);
     let mut g_score: ScoreMap = HashMap::with_hasher(BuildFNVHasher);
-    g_score.insert(current.clone(), 0);
-    let mut queue: MinHeap<(State, usize)> = MinHeap::new();
-    queue.insert((current, 0), 0);
-    let mut result = None;
 
+    let mut queue: MinHeap<(State, usize)> = MinHeap::new();
+
+    for dir in [0, 3] {
+        let current = State {
+            row: 0,
+            col: 0,
+            dir,
+            straight_len: 0,
+        };
+        queue.insert((current.clone(), 0), 0);
+        g_score.insert(current.clone(), 0);
+    }
+
+    let mut result = None;
     while let Some((current, current_g_score)) = queue.pop() {
         if end_fun(&current) {
-            result = Some((current, current_g_score));
+            result = Some(current_g_score);
             break;
         }
 
-        neighbour_fun(
-            current,
-            current_g_score,
-            map,
-            &mut g_score,
-            &mut queue,
-            &mut prevs,
-        );
+        neighbour_fun(current, current_g_score, map, &mut g_score, &mut queue);
     }
-    let (end, end_score) = result.unwrap();
-    // println!("{:?}", reconstruct_path(end, prevs));
+    let end_score = result.unwrap();
     end_score
-}
-
-pub fn reconstruct_path<S: BuildHasher>(
-    mut current: State,
-    prevs: HashMap<State, State, S>,
-) -> Vec<(usize, usize)> {
-    let mut path = vec![(current.row, current.col)];
-    while let Some(s) = prevs.get(&current) {
-        path.push((s.row, s.col));
-        current = s.clone();
-    }
-    path.reverse();
-    path
 }
 
 pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     let map = Map::new(input);
     find_shortest_path(
         &map,
-        |s, sc, m, sm, mh, p| s.add_neighbours_p1(sc, m, sm, mh, p),
+        |s, sc, m, sm, mh| s.add_neighbours(1, 3, sc, m, sm, mh),
         |s| (s.row == map.rows - 1) & (s.col == map.cols - 1),
     )
 }
@@ -232,7 +181,7 @@ pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     let map = Map::new(input);
     find_shortest_path(
         &map,
-        |s, sc, m, sm, mh, p| s.add_neighbours_p2(sc, m, sm, mh, p),
+        |s, sc, m, sm, mh| s.add_neighbours(4, 10, sc, m, sm, mh),
         |s| (s.row == map.rows - 1) & (s.col == map.cols - 1) & (s.straight_len >= 4),
     )
 }
