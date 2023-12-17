@@ -40,45 +40,6 @@ impl BuildHasher for BuildFNVHasher {
     }
 }
 
-#[derive(Copy, Clone, PartialEq, Debug, Eq, Hash)]
-struct Direction {
-    inner: u8,
-}
-
-impl Direction {
-    fn neighbours(&self, straight_line_length: u8) -> Vec<(Self, u8)> {
-        let lower = if self.inner == 0 {
-            Self { inner: 3 }
-        } else {
-            Self {
-                inner: self.inner - 1,
-            }
-        };
-        let upper = if self.inner == 3 {
-            Self { inner: 0 }
-        } else {
-            Self {
-                inner: self.inner + 1,
-            }
-        };
-        if straight_line_length >= 3 {
-            vec![(lower, 1), (upper, 1)]
-        } else {
-            vec![
-                (lower, 1),
-                (upper, 1),
-                (self.clone(), straight_line_length + 1),
-            ]
-        }
-    }
-}
-
-impl From<u8> for Direction {
-    fn from(value: u8) -> Self {
-        Self { inner: value }
-    }
-}
-
 struct Map {
     data: Vec<u8>,
     rows: usize,
@@ -152,6 +113,7 @@ impl State {
         map: &Map,
         g_score: &mut ScoreMap,
         queue: &mut MinHeap<(Self, usize)>,
+        prevs: &mut HashMap<State, State, BuildFNVHasher>,
     ) {
         let mut maybe_add_state = |s: State| {
             if s.straight_len <= 3 {
@@ -176,11 +138,13 @@ impl State {
         map: &Map,
         g_score: &mut ScoreMap,
         queue: &mut MinHeap<(Self, usize)>,
+        prevs: &mut HashMap<State, State, BuildFNVHasher>,
     ) {
         let mut maybe_add_state = |s: State| {
             if s.straight_len <= 10 {
                 let new_score = current_score + map.coord(s.row, s.col).unwrap() as usize;
                 if g_score.get(&s).map(|s| new_score < *s).unwrap_or(true) {
+                    // prevs.insert(s.clone(), self.clone());
                     g_score.insert(s.clone(), new_score);
                     queue.insert((s, new_score), new_score);
                 }
@@ -199,7 +163,14 @@ impl State {
 
 fn find_shortest_path<F, G>(map: &Map, neighbour_fun: F, end_fun: G) -> usize
 where
-    F: Fn(State, usize, &Map, &mut ScoreMap, &mut MinHeap<(State, usize)>),
+    F: Fn(
+        State,
+        usize,
+        &Map,
+        &mut ScoreMap,
+        &mut MinHeap<(State, usize)>,
+        &mut HashMap<State, State, BuildFNVHasher>,
+    ),
     G: Fn(&State) -> bool,
 {
     let current = State {
@@ -209,6 +180,7 @@ where
         straight_len: 0,
     };
 
+    let mut prevs: HashMap<State, State, BuildFNVHasher> = HashMap::with_hasher(BuildFNVHasher);
     let mut g_score: ScoreMap = HashMap::with_hasher(BuildFNVHasher);
     g_score.insert(current.clone(), 0);
     let mut queue: MinHeap<(State, usize)> = MinHeap::new();
@@ -217,20 +189,42 @@ where
 
     while let Some((current, current_g_score)) = queue.pop() {
         if end_fun(&current) {
-            result = Some(current_g_score);
+            result = Some((current, current_g_score));
             break;
         }
 
-        neighbour_fun(current, current_g_score, map, &mut g_score, &mut queue);
+        neighbour_fun(
+            current,
+            current_g_score,
+            map,
+            &mut g_score,
+            &mut queue,
+            &mut prevs,
+        );
     }
-    result.unwrap()
+    let (end, end_score) = result.unwrap();
+    // println!("{:?}", reconstruct_path(end, prevs));
+    end_score
+}
+
+pub fn reconstruct_path<S: BuildHasher>(
+    mut current: State,
+    prevs: HashMap<State, State, S>,
+) -> Vec<(usize, usize)> {
+    let mut path = vec![(current.row, current.col)];
+    while let Some(s) = prevs.get(&current) {
+        path.push((s.row, s.col));
+        current = s.clone();
+    }
+    path.reverse();
+    path
 }
 
 pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     let map = Map::new(input);
     find_shortest_path(
         &map,
-        |s, sc, m, sm, mh| s.add_neighbours_p1(sc, m, sm, mh),
+        |s, sc, m, sm, mh, p| s.add_neighbours_p1(sc, m, sm, mh, p),
         |s| (s.row == map.rows - 1) & (s.col == map.cols - 1),
     )
 }
@@ -238,7 +232,7 @@ pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     let map = Map::new(input);
     find_shortest_path(
         &map,
-        |s, sc, m, sm, mh| s.add_neighbours_p2(sc, m, sm, mh),
+        |s, sc, m, sm, mh, p| s.add_neighbours_p2(sc, m, sm, mh, p),
         |s| (s.row == map.rows - 1) & (s.col == map.cols - 1) & (s.straight_len >= 4),
     )
 }
