@@ -26,8 +26,10 @@ mod day_09;
 mod day_14;
 mod day_15;
 pub mod day_16;
-pub mod day_17;
+// pub mod day_17;
 mod input;
+pub mod min_heap;
+pub mod day_17;
 
 const DAY_01_INPUT: &str = include_str!("data/day_01");
 const DAY_02_INPUT: &str = include_str!("data/day_02");
@@ -96,5 +98,6 @@ fn main() {
     run_day(hday_16::part_1, DAY_16_INPUT, &mut buffer, "16", "1");
     run_day(hday_16::part_2, DAY_16_INPUT, &mut buffer, "16", "2");
     run_day(day_17::part_1, DAY_17_INPUT, &mut buffer, "17", "1");
+    run_day(day_17::part_2, DAY_17_INPUT, &mut buffer, "17", "2");
     println!("ALL RUN IN TOTAL OF: {:?}", start_time.elapsed());
 }
