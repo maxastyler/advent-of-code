@@ -46,6 +46,10 @@ impl<T> MinHeap<T> {
     pub fn pop(&mut self) -> Option<T> {
         self.inner.pop().map(|x| x.inner)
     }
+
+    pub fn len(&self) -> usize {
+        self.inner.len()
+    }
 }
 
 #[cfg(test)]
