@@ -1,44 +1,8 @@
-use std::cmp::{Ordering, Reverse};
-use std::collections::BinaryHeap;
 use std::collections::HashMap;
-use std::hash::{BuildHasher, Hasher};
+
+use hard_mode::fnv_hasher::BuildFNVHasher;
 
 use crate::min_heap::MinHeap;
-
-struct FNVHasher {
-    val: u64,
-}
-
-impl FNVHasher {
-    pub fn new() -> Self {
-        Self {
-            val: 14695981039346656037,
-        }
-    }
-}
-
-impl Hasher for FNVHasher {
-    fn finish(&self) -> u64 {
-        self.val
-    }
-
-    fn write(&mut self, bytes: &[u8]) {
-        bytes.iter().for_each(|b| {
-            self.val = self.val.wrapping_mul(1099511628211);
-            self.val ^= *b as u64;
-        })
-    }
-}
-
-struct BuildFNVHasher;
-
-impl BuildHasher for BuildFNVHasher {
-    type Hasher = FNVHasher;
-
-    fn build_hasher(&self) -> Self::Hasher {
-        Self::Hasher::new()
-    }
-}
 
 struct Map {
     data: Vec<u8>,
