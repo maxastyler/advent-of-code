@@ -28,8 +28,10 @@ where
 }
 
 fn p1_parser(line: &str) -> (&str, i64) {
-    let (dir, rest) = line.split_once(" ").unwrap();
-    (dir, rest.split_once(" ").unwrap().0.parse().unwrap())
+    (
+        &line[0..1],
+        line[2..].split_once(" ").unwrap().0.parse().unwrap(),
+    )
 }
 
 fn p2_parser(line: &str) -> (&str, i64) {
