@@ -1,12 +1,15 @@
-use crate::{vec2::Vec2, window_iter::WindowIter};
+use crate::vec2::Vec2;
 
-pub fn calculate_area(points: impl Iterator<Item = [Vec2; 2]>) -> usize {
-    let (area, perimeter) = points.fold((0, 0), |(area, perimeter), [i1, i2]| {
-        (
-            area + (i1.0 * i2.1 - i2.0 * i1.1),
-            (i2.0 - i1.0).abs() + (i2.1 - i1.1).abs() + perimeter,
-        )
-    });
+pub fn calculate_area<'a>(points: impl Iterator<Item = (&'a str, i64)>) -> usize {
+    let (area, perimeter, _) =
+        points.fold((0, 0, Vec2(0, 0)), |(area, perimeter, i1), (dir, dist)| {
+            let i2 = i1.add(dir, dist).unwrap();
+            (
+                area + (i1.0 * i2.1 - i2.0 * i1.1),
+                (i2.0 - i1.0).abs() + (i2.1 - i1.1).abs() + perimeter,
+                i2,
+            )
+        });
 
     ((area.abs() / 2) + perimeter / 2 + 1) as usize
 }
@@ -15,17 +18,13 @@ fn calculate_area_from_input<F>(input: &str, line_parser: F) -> usize
 where
     F: Fn(&str) -> (&str, i64) + Copy,
 {
-    calculate_area(WindowIter::new(
+    calculate_area(
         input
             .lines()
             .cycle()
             .map(line_parser)
-            .take(input.lines().count() + 1)
-            .scan(Vec2(0, 0), |v, (dir, dist)| {
-                *v = v.add(dir, dist)?;
-                Some(*v)
-            }),
-    ))
+            .take(input.lines().count()),
+    )
 }
 
 fn p1_parser(line: &str) -> (&str, i64) {
