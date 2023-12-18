@@ -15,6 +15,7 @@ use hard_mode::day_13 as hday_13;
 use hard_mode::day_14 as hday_14;
 use hard_mode::day_15 as hday_15;
 use hard_mode::day_16 as hday_16;
+// use hard_mode::day_17 as hday_17; - this is incorrect and slow :'(
 use hard_mode::day_18 as hday_18;
 
 mod day_01;
@@ -63,7 +64,7 @@ where
 }
 
 fn main() {
-    let mut buffer = vec![0u8; 10_000_000];
+    let mut buffer = vec![0u8; 10_000_000000];
     let start_time = Instant::now();
     run_day(hday_01::part_1, DAY_01_INPUT, &mut buffer, "1", "1");
     run_day(hday_01::part_2, DAY_01_INPUT, &mut buffer, "1", "2");
