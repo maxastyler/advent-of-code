@@ -1,7 +1,3 @@
-use std::collections::HashMap;
-
-use hard_mode::fnv_hasher::BuildFNVHasher;
-
 use crate::min_heap::MinHeap;
 
 struct Map {
@@ -30,7 +26,45 @@ impl Map {
     }
 }
 
-type ScoreMap = HashMap<State, usize, BuildFNVHasher>;
+// type ScoreMap = HashMap<State, usize, BuildFNVHasher>;
+struct ScoreMap {
+    elements: Vec<Option<usize>>,
+    row_offset: usize,
+    col_offset: usize,
+    dir_offset: usize,
+}
+
+impl ScoreMap {
+    pub fn new(max_distance: u8, map: &Map) -> Self {
+        let dir_offset = 1 + max_distance as usize;
+        let col_offset = dir_offset * 4;
+        let row_offset = map.cols * col_offset;
+        let num_elems = map.rows * row_offset;
+        Self {
+            elements: vec![None; num_elems],
+            row_offset,
+            col_offset,
+            dir_offset,
+        }
+    }
+
+    #[inline]
+    fn index(&self, state: &State) -> usize {
+        state.row * self.row_offset
+            + state.col * self.col_offset
+            + state.dir as usize * self.dir_offset
+            + state.straight_len as usize
+    }
+
+    pub fn get(&self, state: &State) -> Option<usize> {
+        self.elements[self.index(state)]
+    }
+
+    pub fn insert(&mut self, state: &State, score: usize) {
+        let index = self.index(state);
+        self.elements[index] = Some(score)
+    }
+}
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
 /// A single state
@@ -83,8 +117,8 @@ impl State {
         let mut maybe_add_state = |s: State| {
             if s.straight_len <= max_straight_distance {
                 let new_score = current_score + map.coord(s.row, s.col).unwrap() as usize;
-                if g_score.get(&s).map(|s| new_score < *s).unwrap_or(true) {
-                    g_score.insert(s.clone(), new_score);
+                if g_score.get(&s).map(|s| new_score < s).unwrap_or(true) {
+                    g_score.insert(&s, new_score);
                     queue.insert((s, new_score), new_score);
                 }
             }
@@ -100,12 +134,12 @@ impl State {
     }
 }
 
-fn find_shortest_path<F, G>(map: &Map, neighbour_fun: F, end_fun: G) -> usize
+fn find_shortest_path<F, G>(max_distance: u8, map: &Map, neighbour_fun: F, end_fun: G) -> usize
 where
     F: Fn(State, usize, &Map, &mut ScoreMap, &mut MinHeap<(State, usize)>),
     G: Fn(&State) -> bool,
 {
-    let mut g_score: ScoreMap = HashMap::with_hasher(BuildFNVHasher);
+    let mut g_score: ScoreMap = ScoreMap::new(max_distance, map);
 
     let mut queue: MinHeap<(State, usize)> = MinHeap::new();
 
@@ -117,7 +151,7 @@ where
             straight_len: 0,
         };
         queue.insert((current.clone(), 0), 0);
-        g_score.insert(current.clone(), 0);
+        g_score.insert(&current, 0);
     }
 
     let mut result = None;
@@ -136,6 +170,7 @@ where
 pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
     let map = Map::new(input);
     find_shortest_path(
+        3,
         &map,
         |s, sc, m, sm, mh| s.add_neighbours(1, 3, sc, m, sm, mh),
         |s| (s.row == map.rows - 1) & (s.col == map.cols - 1),
@@ -144,6 +179,7 @@ pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
 pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
     let map = Map::new(input);
     find_shortest_path(
+        10,
         &map,
         |s, sc, m, sm, mh| s.add_neighbours(4, 10, sc, m, sm, mh),
         |s| (s.row == map.rows - 1) & (s.col == map.cols - 1) & (s.straight_len >= 4),
