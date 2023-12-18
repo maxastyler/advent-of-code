@@ -98,14 +98,14 @@ impl<'m> Mem<'m> {
 
 #[cfg(test)]
 mod test {
-    use core::{alloc::GlobalAlloc, mem::size_of_val};
+    use core::mem::size_of_val;
 
     use crate::mem::Mem;
 
     #[test]
     fn mem_works() {
         let mut buffer = [0u8; 1000];
-        let mut mem = Mem::new(buffer.as_mut_slice());
+        let mem = Mem::new(buffer.as_mut_slice());
         let v1 = mem.alloc(30u8).unwrap();
         let v2 = mem.alloc(100u16).unwrap();
         assert_eq!(*v1, 30);
@@ -115,7 +115,7 @@ mod test {
     #[test]
     fn alloc_slice_works() {
         let mut buffer = [0u8; 1000];
-        let mut mem = Mem::new(buffer.as_mut_slice());
+        let mem = Mem::new(buffer.as_mut_slice());
         let v1 = mem.alloc_slice(5, |i| i as u8 + 1 as u8).unwrap();
         let v2 = mem.alloc_slice(5, |i| i as usize + 6 as usize).unwrap();
         assert_eq!(v1, &[1, 2, 3, 4, 5]);

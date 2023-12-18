@@ -68,17 +68,17 @@ fn choose(n: usize, k: usize) -> usize {
 // //     (3, 3)
 // // }
 
-pub fn part_1(input: &str, _buffer: &mut [u8]) -> usize {
+pub fn part_1(_input: &str, _buffer: &mut [u8]) -> usize {
     3
 }
 
-pub fn part_2(input: &str, _buffer: &mut [u8]) -> usize {
+pub fn part_2(_input: &str, _buffer: &mut [u8]) -> usize {
     3
 }
 
 #[cfg(test)]
 mod test {
-    use super::{choose, part_1};
+    use super::choose;
 
     #[test]
     fn choose_works() {

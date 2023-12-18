@@ -1,4 +1,4 @@
-use crate::mem::{self, Mem};
+use crate::mem::Mem;
 
 #[derive(PartialEq, Copy, Clone)]
 enum Tile {
@@ -170,13 +170,15 @@ pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
     {
         history.push((*dir, map.clone(&mem)));
         map.tilt(*dir);
-        if let Some(i) = history.iter().enumerate().find_map(|(i, (d, m))| {
-            if *m == map {
-                Some(i)
-            } else {
-                None
-            }
-        }) {
+        if let Some(i) = history.iter().enumerate().find_map(
+            |(i, (_d, m))| {
+                if *m == map {
+                    Some(i)
+                } else {
+                    None
+                }
+            },
+        ) {
             start_loop = Some(i);
             break;
         }
@@ -187,12 +189,10 @@ pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
 #[cfg(test)]
 mod test {
     use core::fmt::Debug;
-    use std::println;
+
     extern crate std;
 
-    use crate::mem::Mem;
-
-    use super::{part_1, part_2, Map};
+    use super::{part_1, Map};
 
     const TEST_INPUT: &str = "O....#....
 O.OO#....#

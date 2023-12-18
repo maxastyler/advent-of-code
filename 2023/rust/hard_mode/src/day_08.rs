@@ -1,7 +1,4 @@
 extern crate alloc;
-use core::cell::RefCell;
-
-use alloc::rc::{Rc, Weak};
 
 use crate::mem::Mem;
 

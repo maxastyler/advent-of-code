@@ -15,6 +15,7 @@ use hard_mode::day_13 as hday_13;
 use hard_mode::day_14 as hday_14;
 use hard_mode::day_15 as hday_15;
 use hard_mode::day_16 as hday_16;
+use hard_mode::day_18 as hday_18;
 
 mod day_01;
 mod day_02;
@@ -30,6 +31,7 @@ pub mod day_16;
 mod input;
 pub mod min_heap;
 pub mod day_17;
+
 
 const DAY_01_INPUT: &str = include_str!("data/day_01");
 const DAY_02_INPUT: &str = include_str!("data/day_02");
@@ -48,6 +50,7 @@ const DAY_14_INPUT: &str = include_str!("data/day_14");
 const DAY_15_INPUT: &str = include_str!("data/day_15");
 const DAY_16_INPUT: &str = include_str!("data/day_16");
 const DAY_17_INPUT: &str = include_str!("data/day_17");
+const DAY_18_INPUT: &str = include_str!("data/day_18");
 
 fn run_day<F>(fun: F, input: &str, buffer: &mut [u8], day: &str, part: &str)
 where
@@ -99,5 +102,7 @@ fn main() {
     run_day(hday_16::part_2, DAY_16_INPUT, &mut buffer, "16", "2");
     run_day(day_17::part_1, DAY_17_INPUT, &mut buffer, "17", "1");
     run_day(day_17::part_2, DAY_17_INPUT, &mut buffer, "17", "2");
+    run_day(hday_18::part_1, DAY_18_INPUT, &mut buffer, "18", "1");
+    run_day(hday_18::part_2, DAY_18_INPUT, &mut buffer, "18", "2");
     println!("ALL RUN IN TOTAL OF: {:?}", start_time.elapsed());
 }

@@ -1,5 +1,3 @@
-use core::iter::repeat;
-
 use crate::mem::Mem;
 
 #[derive(Copy, PartialEq, Clone, Debug)]
@@ -199,7 +197,7 @@ pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
 #[cfg(test)]
 mod test {
     extern crate alloc;
-    use alloc::vec::Vec;
+
 
     use super::{part_1, part_2, Dir, Grid};
     const TEST_INPUT_1: &str = ".....

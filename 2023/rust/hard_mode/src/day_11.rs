@@ -1,5 +1,3 @@
-use core::iter::repeat;
-
 use crate::mem::Mem;
 
 struct Grid<'a> {
@@ -46,7 +44,7 @@ impl<'a> Grid<'a> {
     }
 
     fn new(data: &'a str, mem: &Mem<'a>) -> Option<Self> {
-        let (rows, columns) = data.lines().map(|l| l.chars().count()).try_fold(
+        let (_rows, columns) = data.lines().map(|l| l.chars().count()).try_fold(
             (0usize, None),
             |(lines, last_columns), columns| {
                 last_columns.map_or(Some((lines + 1, Some(columns))), |lc| {
@@ -126,11 +124,10 @@ pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
 #[cfg(test)]
 mod test {
     extern crate alloc;
-    use alloc::vec::Vec;
 
     use crate::day_11::distances;
 
-    use super::{part_1, part_2, Grid};
+    use super::part_1;
     const TEST_INPUT_1: &str = "...#......
 .......#..
 #.........

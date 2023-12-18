@@ -56,6 +56,6 @@ mod test {
     #[test]
     fn new_works() {
         let mut buffer = [0u8; 10000];
-        let mem = Mem::new(&mut buffer);
+        Mem::new(&mut buffer);
     }
 }

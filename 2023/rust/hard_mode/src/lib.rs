@@ -20,3 +20,6 @@ pub mod day_14;
 pub mod growable;
 pub mod day_15;
 pub mod day_16;
+pub mod window_iter;
+pub mod vec2;
+pub mod day_18;

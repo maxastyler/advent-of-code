@@ -152,7 +152,7 @@ pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
 
 #[cfg(test)]
 mod test {
-    use super::{part_1, part_2, Card, CardMemo, Hand};
+    use super::{part_1, part_2, CardMemo, Hand};
 
     const TEST_INPUT: &str = "32T3K 765
 T55J5 684
