@@ -63,7 +63,7 @@ where
 }
 
 fn main() {
-    let mut buffer = [0u8; 9_000_000];
+    let mut buffer = vec![0u8; 10_000_000];
     let start_time = Instant::now();
     run_day(hday_01::part_1, DAY_01_INPUT, &mut buffer, "1", "1");
     run_day(hday_01::part_2, DAY_01_INPUT, &mut buffer, "1", "2");
@@ -106,3 +106,4 @@ fn main() {
     run_day(hday_18::part_2, DAY_18_INPUT, &mut buffer, "18", "2");
     println!("ALL RUN IN TOTAL OF: {:?}", start_time.elapsed());
 }
+
