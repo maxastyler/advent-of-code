@@ -1,13 +1,17 @@
-pub struct Growable<T, const Limit: usize> {
+use core::marker::PhantomData;
+
+pub struct Growable<'memory, T, const Limit: usize> {
     start: *mut T,
     length: usize,
+    _phantom: PhantomData<&'memory ()>,
 }
 
-impl<T, const Limit: usize> Growable<T, Limit> {
+impl<'memory, T, const Limit: usize> Growable<'memory, T, Limit> {
     pub unsafe fn new(ptr: *mut T) -> Self {
         Self {
             start: ptr,
             length: 0,
+            _phantom: PhantomData,
         }
     }
 
@@ -40,12 +44,16 @@ impl<T, const Limit: usize> Growable<T, Limit> {
 
     pub fn pop(&mut self) -> Option<T> {
         if self.length > 0 {
-	    let ret_val = unsafe { self.start.add(self.length-1).read() };
-	    self.length -= 1;
+            let ret_val = unsafe { self.start.add(self.length - 1).read() };
+            self.length -= 1;
             Some(ret_val)
         } else {
             None
         }
+    }
+
+    pub fn len(&self)-> usize {
+	self.length
     }
 }
 

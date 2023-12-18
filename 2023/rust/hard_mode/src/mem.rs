@@ -82,7 +82,7 @@ impl<'m> Mem<'m> {
         Ok(unsafe { slice::from_raw_parts_mut(slice_ptr, length) })
     }
 
-    pub fn alloc_growable<T, const Limit: usize>(&self) -> Result<Growable<T, Limit>, Oom> {
+    pub fn alloc_growable<T, const Limit: usize>(&self) -> Result<Growable<'m, T, Limit>, Oom> {
         let size = size_of::<T>() * Limit;
         let growable_ptr = unsafe { self.bump(size, align_of::<T>()) }? as *mut T;
         Ok(unsafe { Growable::new(growable_ptr) })

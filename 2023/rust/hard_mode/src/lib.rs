@@ -24,3 +24,5 @@ pub mod window_iter;
 pub mod vec2;
 pub mod day_18;
 pub mod fnv_hasher;
+pub mod day_17;
+pub mod bucket_queue;
