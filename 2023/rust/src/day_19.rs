@@ -1,4 +1,4 @@
-use std::{fmt::Debug, time::Instant};
+use std::fmt::Debug;
 
 use hard_mode::{
     day_19::{Property, Rule, Rules},
@@ -33,22 +33,6 @@ impl PartRanges {
             a: Ranges::new(r),
             s: Ranges::new(r),
         }
-    }
-    fn new_empty() -> Self {
-        Self {
-            x: Ranges { ranges: vec![] },
-            m: Ranges { ranges: vec![] },
-            a: Ranges { ranges: vec![] },
-            s: Ranges { ranges: vec![] },
-        }
-    }
-
-    fn combine(&mut self, other: PartRanges) -> &mut Self {
-        self.x.combine(other.x);
-        self.m.combine(other.m);
-        self.a.combine(other.a);
-        self.s.combine(other.s);
-        self
     }
 
     fn intersect(&mut self, property: Property, range: &Range) -> &mut Self {

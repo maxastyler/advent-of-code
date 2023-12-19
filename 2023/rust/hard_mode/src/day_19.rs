@@ -1,5 +1,3 @@
-use core::{ops::ControlFlow, slice::SliceIndex};
-
 use crate::mem::Mem;
 
 type Num = u32;
@@ -155,7 +153,7 @@ impl<'a> Rules<'a> {
     }
 }
 
-struct Part {
+pub struct Part {
     x: Num,
     m: Num,
     a: Num,
