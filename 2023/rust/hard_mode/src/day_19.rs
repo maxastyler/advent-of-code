@@ -26,13 +26,14 @@ impl TryFrom<&str> for Property {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub enum Target {
     Accept,
     Reject,
     Goto(usize),
 }
 
+#[derive(Debug)]
 pub enum Rule {
     GreaterThan(Property, Num, Target),
     LessThan(Property, Num, Target),
@@ -56,99 +57,99 @@ impl Rule {
         Self::parse_comp(rule, '<')
     }
 
-    fn parse_target(target: &str, rules: &str) -> Option<Target> {
+    fn parse_target(target: &str, rule_nums: &[(usize, &str)]) -> Option<Target> {
         Some(match target {
             "A" => Target::Accept,
             "R" => Target::Reject,
-            _ => Target::Goto(Self::get_rule_number(target, rules)?),
+            _ => Target::Goto(Self::get_rule_number(target, rule_nums)?),
         })
     }
 
-    pub fn parse(rule: &str, rules: &str) -> Option<Self> {
+    pub fn parse(rule: &str, rule_nums: &[(usize, &str)]) -> Option<Self> {
         if let Some((prop, num, target)) = Self::parse_gt(rule) {
             Some(Self::GreaterThan(
                 prop,
                 num,
-                Self::parse_target(target, rules)?,
+                Self::parse_target(target, rule_nums)?,
             ))
         } else if let Some((prop, num, target)) = Self::parse_lt(rule) {
             Some(Self::LessThan(
                 prop,
                 num,
-                Self::parse_target(target, rules)?,
+                Self::parse_target(target, rule_nums)?,
             ))
         } else {
-            Some(Self::Unconditional(Self::parse_target(rule, rules)?))
+            Some(Self::Unconditional(Self::parse_target(rule, rule_nums)?))
         }
     }
-    fn get_rule_number(rule: &str, rules: &str) -> Option<usize> {
-        match rules.lines().try_fold(0usize, |pos, line| {
-            let (rule_name, rest) = line.split_once("{").unwrap();
-            if rule_name == rule {
-                ControlFlow::Break(pos)
-            } else {
-                ControlFlow::Continue(pos + rest.split(",").count())
-            }
-        }) {
-            ControlFlow::Continue(_) => None,
-            ControlFlow::Break(r) => Some(r),
-        }
+    fn get_rule_number(rule: &str, rule_nums: &[(usize, &str)]) -> Option<usize> {
+        rule_nums
+            .iter()
+            .find_map(|(pos, r)| if *r == rule { Some(*pos) } else { None })
     }
 }
 
 pub struct Rules<'a> {
-    rules: &'a [Rule],
-    start: usize,
+    pub rule_nums: &'a [(usize, &'a str)],
+    pub rules: &'a [Rule],
+    pub start: usize,
 }
 
 impl<'a> Rules<'a> {
-    pub fn parse_rules<'b>(rules: &'b str, mem: &'a Mem<'a>) -> Self {
+    pub fn parse_rules<'b: 'a>(rules: &'b str, mem: &'a Mem<'a>) -> Self {
         let num_rules = rules.lines().map(|l| l.split(",").count()).sum::<usize>();
+        let num_rule_names = rules.lines().count();
+        let rule_nums = mem
+            .alloc_slice_from_iter(
+                num_rule_names,
+                rules.lines().scan(0, |s, l| {
+                    let prev = *s;
+                    *s += l.split(",").count();
+                    Some((prev, l.split_once("{").unwrap().0))
+                }),
+            )
+            .unwrap();
         let rules_iter = rules.lines().flat_map(|l| {
             l.split_once("{")
                 .unwrap()
                 .1
                 .trim_end_matches("}")
                 .split(",")
-                .map(|r| Rule::parse(r, rules).unwrap())
+                .map(|r| Rule::parse(r, rule_nums).unwrap())
         });
         Self {
+            rule_nums,
             rules: mem.alloc_slice_from_iter(num_rules, rules_iter).unwrap(),
-            start: Rule::get_rule_number("in", rules).unwrap(),
+            start: Rule::get_rule_number("in", rule_nums).unwrap(),
         }
     }
 
     pub fn pass_part(&self, part: &Part) -> bool {
         let mut index = self.start;
         loop {
-            match self.rules[index] {
+            let target = match self.rules[index] {
                 Rule::GreaterThan(prop, num, target) => {
-                    if part.get(prop) > num {
-                        match target {
-                            Target::Accept => return true,
-                            Target::Reject => return false,
-                            Target::Goto(i) => index = i,
-                        };
+                    if part.get(prop) <= num {
+                        index += 1;
+                        continue;
                     } else {
-                        index += 1
+                        target
                     }
                 }
                 Rule::LessThan(prop, num, target) => {
-                    if part.get(prop) < num {
-                        match target {
-                            Target::Accept => return true,
-                            Target::Reject => return false,
-                            Target::Goto(i) => index = i,
-                        };
+                    if part.get(prop) >= num {
+                        index += 1;
+                        continue;
                     } else {
-                        index += 1
+                        target
                     }
                 }
-                Rule::Unconditional(u) => match u {
-                    Target::Accept => return true,
-                    Target::Reject => return false,
-                    Target::Goto(i) => index = i,
-                },
+                Rule::Unconditional(target) => target,
+            };
+            match target {
+                Target::Accept => return true,
+                Target::Reject => return false,
+                Target::Goto(i) => index = i,
             }
         }
     }
@@ -207,24 +208,9 @@ pub fn part_1(input: &str, buffer: &mut [u8]) -> usize {
         .sum::<u32>() as usize
 }
 
-pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
-    let mem = Mem::new(buffer);
-    let (rules, _) = input.split_once("\n\n").unwrap();
-    let rules = Rules::parse_rules(rules, &mem);
-    let limit = 300;
-    (0..limit)
-        .flat_map(|x| {
-            (0..limit).flat_map(move |m| {
-                (0..limit).flat_map(move |a| (0..limit).map(move |s| Part { x, m, a, s }))
-            })
-        })
-        .filter(|p| rules.pass_part(p))
-        .count()
-}
-
 #[cfg(test)]
 mod test {
-    use super::{part_1, part_2};
+    use super::part_1;
     const TEST_INPUT: &str = "px{a<2006:qkq,m>2090:A,rfg}
 pv{a>1716:R,A}
 lnx{m>1548:A,A}
@@ -246,12 +232,6 @@ hdj{m>838:A,pv}
     #[test]
     fn part_1_works() {
         let mut buffer = [0u8; 1000];
-        assert_eq!(part_1(TEST_INPUT, &mut buffer), 3);
-    }
-
-    #[test]
-    fn part_2_works() {
-        let mut buffer = [0u8; 1000];
-        assert_eq!(part_2(TEST_INPUT, &mut buffer), 3);
+        assert_eq!(part_1(TEST_INPUT, &mut buffer), 19114);
     }
 }

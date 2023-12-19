@@ -1,3 +1,5 @@
+#![feature(iter_intersperse)]
+
 use std::time::Instant;
 
 use hard_mode::day_01 as hday_01;
@@ -34,6 +36,7 @@ pub mod day_17;
 mod input;
 pub mod min_heap;
 pub mod day_19;
+pub mod ranges;
 
 const DAY_01_INPUT: &str = include_str!("data/day_01");
 const DAY_02_INPUT: &str = include_str!("data/day_02");
@@ -110,6 +113,6 @@ fn main() {
     run_day(hday_18::part_1, DAY_18_INPUT, &mut buffer, "18", "1");
     run_day(hday_18::part_2, DAY_18_INPUT, &mut buffer, "18", "2");    
     run_day(hday_19::part_1, DAY_19_INPUT, &mut buffer, "19", "1");
-    run_day(hday_19::part_2, DAY_19_INPUT, &mut buffer, "19", "2");
+    run_day(day_19::part_2, DAY_19_INPUT, &mut buffer, "19", "2");
     println!("ALL RUN IN TOTAL OF: {:?}", start_time.elapsed());
 }

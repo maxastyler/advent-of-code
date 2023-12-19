@@ -1,126 +1,165 @@
-/// Start inclusive, End exclusive
-#[derive(Debug, Copy, Clone, PartialEq)]
-struct Range(usize, usize);
+use std::{fmt::Debug, time::Instant};
 
-#[derive(Debug, PartialEq)]
-enum RangeSplit {
-    Engulfed,
-    Untouched(Range),
-    One(Range),
-    Two(Range, Range),
+use hard_mode::{
+    day_19::{Property, Rule, Rules},
+    mem::Mem,
+};
+
+use crate::ranges::{Range, Ranges};
+
+#[derive(Clone, PartialEq)]
+struct PartRanges {
+    x: Ranges,
+    m: Ranges,
+    a: Ranges,
+    s: Ranges,
 }
 
-impl Range {
-    fn len(&self) -> usize {
-        self.1 - self.0
-    }
-
-    fn intersect(&self, other: &Self) -> RangeSplit {
-        if other.0 <= self.0 {
-            if other.1 <= self.0 {
-                RangeSplit::Untouched(*self)
-            } else {
-                if other.1 < self.1 {
-                    RangeSplit::One(Range(other.1, self.1))
-                } else {
-                    RangeSplit::Engulfed
-                }
-            }
-        } else {
-            if other.0 >= self.1 {
-                RangeSplit::Untouched(*self)
-            } else {
-                if other.1 < self.1 {
-                    RangeSplit::Two(Range(self.0, other.0), Range(other.1, self.1))
-                } else {
-                    RangeSplit::One(Range(self.0, other.0))
-                }
-            }
-        }
+impl Debug for PartRanges {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_fmt(format_args!(
+            "{{\n x:{:?}\n m:{:?}\n a:{:?}\n s:{:?}\n}}",
+            self.x, self.m, self.a, self.s
+        ))
     }
 }
 
-/// A set of ranges, ordered
-#[derive(Debug, Clone, PartialEq)]
-struct Ranges {
-    ranges: Vec<Range>,
-}
-
-impl Ranges {
-    fn new(initial: Range) -> Self {
+impl PartRanges {
+    fn new(lower: usize, upper: usize) -> Self {
+        let r = Range(lower, upper);
         Self {
-            ranges: vec![initial],
+            x: Ranges::new(r),
+            m: Ranges::new(r),
+            a: Ranges::new(r),
+            s: Ranges::new(r),
+        }
+    }
+    fn new_empty() -> Self {
+        Self {
+            x: Ranges { ranges: vec![] },
+            m: Ranges { ranges: vec![] },
+            a: Ranges { ranges: vec![] },
+            s: Ranges { ranges: vec![] },
         }
     }
 
-    fn intersect(&mut self, other: &Range) -> &mut Self {
-        let mut untouched_before = false;
-        for index in (0..self.ranges.len()).rev() {
-            match self.ranges[index].intersect(other) {
-                RangeSplit::Engulfed => {
-                    self.ranges.remove(index);
-                }
-                RangeSplit::Untouched(_) => {
-                    if untouched_before {
-                        break;
-                    } else {
-                        untouched_before = true;
-                    }
-                }
-                RangeSplit::One(r) => {
-                    self.ranges[index] = r;
-                }
-                RangeSplit::Two(r1, r2) => {
-                    self.ranges[index] = r2;
-                    self.ranges.insert(index, r1);
-                }
-            }
-        }
+    fn combine(&mut self, other: PartRanges) -> &mut Self {
+        self.x.combine(other.x);
+        self.m.combine(other.m);
+        self.a.combine(other.a);
+        self.s.combine(other.s);
         self
     }
+
+    fn intersect(&mut self, property: Property, range: &Range) -> &mut Self {
+        match property {
+            Property::X => self.x.intersect(range),
+            Property::M => self.m.intersect(range),
+            Property::A => self.a.intersect(range),
+            Property::S => self.s.intersect(range),
+        };
+        self
+    }
+
+    /// Split at the given number on the given property, returning a tuple
+    /// (self lower, self higher )
+    /// lower ends on property (exclusive) higher starts on property (inclusive)
+    fn split_at(&mut self, property: Property, num: usize) -> (Self, &mut Self) {
+        let max_range = Range(
+            num,
+            match property {
+                Property::X => self.x.max().unwrap(),
+                Property::M => self.m.max().unwrap(),
+                Property::A => self.a.max().unwrap(),
+                Property::S => self.s.max().unwrap(),
+            },
+        );
+        let min_range = Range(
+            match property {
+                Property::X => self.x.min().unwrap(),
+                Property::M => self.m.min().unwrap(),
+                Property::A => self.a.min().unwrap(),
+                Property::S => self.s.min().unwrap(),
+            },
+            num,
+        );
+        let mut cloned = self.clone();
+        cloned.intersect(property, &max_range);
+        (cloned, self.intersect(property, &min_range))
+    }
+
+    fn product(&self) -> usize {
+        self.x.len() * self.m.len() * self.a.len() * self.s.len()
+    }
+}
+
+fn count_exits(rules: Rules) -> usize {
+    let mut queue: Vec<(usize, PartRanges)> = vec![(rules.start, PartRanges::new(1, 4001))];
+    let mut passed_ranges = 0;
+    'next_in_queue: while let Some((mut index, mut ranges)) = queue.pop() {
+        loop {
+            let target = match rules.rules[index] {
+                Rule::GreaterThan(prop, num, target) => {
+                    let (lower, _) = ranges.split_at(prop, num as usize + 1);
+                    queue.push((index + 1, lower));
+                    target
+                }
+                Rule::LessThan(prop, num, target) => {
+                    let (lower, _) = ranges.split_at(prop, num as usize);
+                    queue.push((index + 1, ranges));
+                    ranges = lower;
+                    target
+                }
+                Rule::Unconditional(target) => target,
+            };
+            match target {
+                hard_mode::day_19::Target::Accept => {
+                    passed_ranges += ranges.product();
+                    continue 'next_in_queue;
+                }
+                hard_mode::day_19::Target::Reject => continue 'next_in_queue,
+                hard_mode::day_19::Target::Goto(i) => {
+                    index = i;
+                }
+            }
+        }
+    }
+    passed_ranges
+}
+
+pub fn part_2(input: &str, buffer: &mut [u8]) -> usize {
+    let mem = Mem::new(buffer);
+    let (rules, _) = input.split_once("\n\n").unwrap();
+    let rules = Rules::parse_rules(rules, &mem);
+    count_exits(rules)
 }
 
 #[cfg(test)]
 mod test {
-    use crate::day_19::RangeSplit;
 
-    use super::{Range, Ranges};
+    use super::part_2;
 
-    #[test]
-    fn range_works() {
-        let r = Range(5, 10);
-        assert_eq!(r.intersect(&Range(0, 4)), RangeSplit::Untouched(r));
-        assert_eq!(r.intersect(&Range(0, 5)), RangeSplit::Untouched(r));
-        assert_eq!(r.intersect(&Range(11, 12)), RangeSplit::Untouched(r));
-        assert_eq!(r.intersect(&Range(1, 11)), RangeSplit::Engulfed);
-        assert_eq!(r.intersect(&Range(1, 6)), RangeSplit::One(Range(6, 10)));
-        assert_eq!(r.intersect(&Range(1, 10)), RangeSplit::Engulfed);
-        assert_eq!(r.intersect(&Range(1, 9)), RangeSplit::One(Range(9, 10)));
-        assert_eq!(
-            r.intersect(&Range(10, 13)),
-            RangeSplit::Untouched(Range(5, 10))
-        );
-        assert_eq!(r.intersect(&Range(5, 10)), RangeSplit::Engulfed);
-        assert_eq!(r.intersect(&Range(6, 10)), RangeSplit::One(Range(5, 6)));
-        assert_eq!(
-            r.intersect(&Range(6, 9)),
-            RangeSplit::Two(Range(5, 6), Range(9, 10))
-        );
-    }
+    const TEST_INPUT: &str = "px{a<2006:qkq,m>2090:A,rfg}
+pv{a>1716:R,A}
+lnx{m>1548:A,A}
+rfg{s<537:gd,x>2440:R,A}
+qs{s>3448:A,lnx}
+qkq{x<1416:A,crn}
+crn{x>2662:A,R}
+in{s<1351:px,qqz}
+qqz{s>2770:qs,m<1801:hdj,R}
+gd{a>3333:R,R}
+hdj{m>838:A,pv}
+
+{x=787,m=2655,a=1222,s=2876}
+{x=1679,m=44,a=2067,s=496}
+{x=2036,m=264,a=79,s=2244}
+{x=2461,m=1339,a=466,s=291}
+{x=2127,m=1623,a=2188,s=1013}";
 
     #[test]
-    fn ranges_works() {
-        let mut r = Ranges::new(Range(4, 10));
-        assert_eq!(*r.clone().intersect(&Range(0, 1)), r);
-        assert_eq!(
-            *r.clone().intersect(&Range(4, 9)),
-            Ranges::new(Range(9, 10))
-        );
-        assert_eq!(
-            *r.clone().intersect(&Range(5, 7)).intersect(&Range(8, 9)),
-            Ranges {
-                ranges: vec![Range(4, 5), Range(7, 8), Range(9, 10)]
-            }
-        );
+    fn part_2_works() {
+        let mut buffer = [0u8; 1000];
+        assert_eq!(part_2(TEST_INPUT, &mut buffer), 167409079868000);
     }
 }
