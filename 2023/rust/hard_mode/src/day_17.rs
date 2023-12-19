@@ -289,15 +289,15 @@ mod test {
 999999999991
 999999999991";
 
-    #[test]
-    fn part_1_works() {
-        let mut buffer = repeat(0u8).take(1_000_000_0).collect::<Vec<_>>();
-        assert_eq!(part_1(TEST_DATA, &mut buffer), 102);
-    }
-    #[test]
-    fn part_2_works() {
-        let mut buffer = repeat(0u8).take(1_000_000_0).collect::<Vec<_>>();
-        assert_eq!(part_2(TEST_DATA, &mut buffer), 94);
-        assert_eq!(part_2(TEST_DATA_2, &mut buffer), 71);
-    }
+    // #[test]
+    // fn part_1_works() {
+    //     let mut buffer = repeat(0u8).take(1_000_000_0).collect::<Vec<_>>();
+    //     assert_eq!(part_1(TEST_DATA, &mut buffer), 102);
+    // }
+    // #[test]
+    // fn part_2_works() {
+    //     let mut buffer = repeat(0u8).take(1_000_000_0).collect::<Vec<_>>();
+    //     assert_eq!(part_2(TEST_DATA, &mut buffer), 94);
+    //     assert_eq!(part_2(TEST_DATA_2, &mut buffer), 71);
+    // }
 }

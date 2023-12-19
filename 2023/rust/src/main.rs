@@ -17,6 +17,7 @@ use hard_mode::day_15 as hday_15;
 use hard_mode::day_16 as hday_16;
 // use hard_mode::day_17 as hday_17; - this is incorrect and slow :'(
 use hard_mode::day_18 as hday_18;
+use hard_mode::day_19 as hday_19;
 
 mod day_01;
 mod day_02;
@@ -29,10 +30,10 @@ mod day_14;
 mod day_15;
 pub mod day_16;
 // pub mod day_17;
+pub mod day_17;
 mod input;
 pub mod min_heap;
-pub mod day_17;
-
+pub mod day_19;
 
 const DAY_01_INPUT: &str = include_str!("data/day_01");
 const DAY_02_INPUT: &str = include_str!("data/day_02");
@@ -52,6 +53,7 @@ const DAY_15_INPUT: &str = include_str!("data/day_15");
 const DAY_16_INPUT: &str = include_str!("data/day_16");
 const DAY_17_INPUT: &str = include_str!("data/day_17");
 const DAY_18_INPUT: &str = include_str!("data/day_18");
+const DAY_19_INPUT: &str = include_str!("data/day_19");
 
 fn run_day<F>(fun: F, input: &str, buffer: &mut [u8], day: &str, part: &str)
 where
@@ -105,6 +107,9 @@ fn main() {
     run_day(day_17::part_2, DAY_17_INPUT, &mut buffer, "17", "2");
     run_day(hday_18::part_1, DAY_18_INPUT, &mut buffer, "18", "1");
     run_day(hday_18::part_2, DAY_18_INPUT, &mut buffer, "18", "2");
+    run_day(hday_18::part_1, DAY_18_INPUT, &mut buffer, "18", "1");
+    run_day(hday_18::part_2, DAY_18_INPUT, &mut buffer, "18", "2");    
+    run_day(hday_19::part_1, DAY_19_INPUT, &mut buffer, "19", "1");
+    run_day(hday_19::part_2, DAY_19_INPUT, &mut buffer, "19", "2");
     println!("ALL RUN IN TOTAL OF: {:?}", start_time.elapsed());
 }
-
